@@ -4,7 +4,23 @@
     export let uid;
 </script>
 
+<style>
 
-<h3>Hi, { displayName }!</h3>
+    .profile h3{
+        padding-right: 4px;
+    }
+    .profile{
+        display: flex;
+    }
 
-<img src={ photoURL } width="100" alt="user { uid }">
+    .profile-img{
+        width: 50px;
+        height: 50px; 
+        padding: 10px;
+    }
+</style>
+
+<div class="profile">
+    <img class="profile-img" src={ photoURL } alt="user { uid }">
+    <h3>Hi, { displayName }!</h3>
+</div>
