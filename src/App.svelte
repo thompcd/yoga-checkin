@@ -116,7 +116,15 @@ button{
     display: flex;
     flex: 1;
     background-color: white;
+    padding: 16px;
 }
+
+ .calendar-section{
+     background-color: white;
+     border-right: dashed 1px black;
+     padding: 16px;
+     min-width: 400px;
+ }
 
 .login{
     display: flex;
@@ -135,11 +143,14 @@ button{
     padding-top: 50px;
  }
 
- .calendar-section{
-     background-color: white;
-     border-right: dashed 1px black;
-     min-width: 400px;
- }
+.calendar{
+    display: flex;
+}
+
+.todo{
+    display: flex;
+    flex-direction: column;
+}
 
 </style>
 
@@ -161,7 +172,9 @@ button{
             </div>
         </div>
         <div class="todo-section">
-            <Todos uid={user.uid} />
+            <div class="todo">
+                <Todos uid={user.uid} />
+            </div>
         </div>
 {:else}
     <!-- TODO: wait for auto login -->
