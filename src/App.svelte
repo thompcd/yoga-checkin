@@ -4,7 +4,8 @@
     import TextAnimation from './TextAnimation.svelte';
     import Datepicker from './Calendar/Datepicker.svelte';
 
-    import { auth, googleProvider } from './firebase';
+    import { lightAColor } from './style-constants';
+    import { auth, googleProvider, testString } from './firebase';
     import { authState } from 'rxfire/auth';
     import { formatDate } from 'timeUtils'
     import { onMount } from 'svelte';
@@ -44,36 +45,17 @@
 	  inThirtyDays = date;
 	}
 
-	function logChoice(date) {
+	const logchoice = (date) => {
 	  // eslint-disable-next-line
 	  console.log(`User chose ${date}.`);
-	}
+    }
+    
+
 
 	// onMount(() => {
 	//   // eslint-disable-next-line
 	//   hljs.initHighlightingOnLoad();
 	// });
-
-//     var today = new Date();
-//     console.log(formatDate(today,'Your appointment is on #{l}, #{F} #{m}, #{Y} at #{g}:#{i} #{A}.'));
-
-//     function addDays(date, days) {
-//         var result = new Date(date);
-//         result.setDate(result.getDate() + days);
-//         return result;
-//     }
-
-//     function subtractDays(date, days) {
-//         var result = new Date(date);
-//         result.setDate(result.getDate() - days);
-//         return result;
-// }
-//     var threeDaysInPast = subtractDays(today, 3);
-//     var inThirtyDays = addDays(today, 30);
-//     var noWeekendsSelectableCallback = function(date) {
-//         return true;
-//}
-
 
     let w = window,
     d = document,
@@ -91,73 +73,10 @@
     }
 </script>
 
-<style>
-
-
-.container{
-    display:flex;
-    justify-content: space-around;
-}
-
-button{
-	max-height: 36px;
-    background-color: #ff1d8e;
-    margin: auto;
-}
-
-.profile-section{
-    border: 1px solid #888;
-    border-radius: 1px;
-    box-shadow: 5px 10px #888888;
-    padding: 16px;
-}
-
-.todo-section{
-    display: flex;
-    flex: 1;
-    background-color: white;
-    padding: 16px;
-}
-
- .calendar-section{
-     background-color: white;
-     border-right: dashed 1px black;
-     padding: 16px;
-     min-width: 400px;
- }
-
-.login{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    height: 250px;
-    margin: auto;
-}
-
-.login-img{
-    max-height: 300px;
-    max-width: 300px;
-    margin: auto;
-    padding-right: 24px;
-    padding-top: 50px;
- }
-
-.calendar{
-    display: flex;
-}
-
-.todo{
-    display: flex;
-    flex-direction: column;
-}
-
-</style>
-
 <section>
 <div class="container" style={height};>
 {#if user}
-        <div class="profile-section">
+        <div class="profile-section" style="background-color:{lightAColor};">
             <Profile {...user} />
             <button on:click={ () => auth.signOut() }>Logout</button>
         </div>
@@ -193,3 +112,65 @@ button{
 </div>
 
 </section>
+
+<style>
+
+
+.container{
+    display:flex;
+    justify-content: space-around;
+}
+
+button{
+	max-height: 36px;
+    background-color: #FF5CAD;
+    margin: auto;
+}
+
+.profile-section{
+    border: 1px solid #888;
+    border-radius: 1px;
+    box-shadow: 5px 10px #888888;
+    padding: 16px;
+}
+
+.todo-section{
+    display: flex;
+    flex: 1;
+    background-color: white;
+    padding: 16px;
+}
+
+ .calendar-section{
+     border-right: dashed 1px black;
+     padding: 16px;
+     min-width: 400px;
+ }
+
+.login{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: 250px;
+    margin: auto;
+}
+
+.login-img{
+    max-height: 300px;
+    max-width: 300px;
+    margin: auto;
+    padding-right: 24px;
+    padding-top: 50px;
+ }
+
+.calendar{
+    display: flex;
+}
+
+.todo{
+    display: flex;
+    flex-direction: column;
+}
+
+</style>

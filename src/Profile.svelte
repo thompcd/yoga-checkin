@@ -19,7 +19,7 @@
     <ul class="account-info"><h4>Account Information</h4>
         <li>Email: {email}</li>
         <li>Phone: {phoneNumber === null ? "None" : phoneNumber}</li>
-        <br>
+        <div class="separator"></div>
         <li><a href={updateEmail}>Update Email</a></li>
         <li><a href={updatePhoneNumber}>Update Phone</a></li>
         <li><a href={updatePassword}>Update Password</a></li>
@@ -29,6 +29,12 @@
 </div>
 
 <style>
+
+    .separator{
+        height: 1px;
+        padding: 4px;
+        width: 100%;
+        border-bottom: 1px solid black;}
     .profile-img-wrapper{
         display: inline-flex;
     }

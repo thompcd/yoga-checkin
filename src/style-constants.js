@@ -1,0 +1,9 @@
+export const primaryAColor = "#FF5CAD";
+export const primaryBColor = "#FF3C75";
+export const secondaryAColor = "#FF498E";
+export const secondaryBColor = "#FF305B";
+export const lightAColor = "#FFF7FF";
+export const lightBColor = "#FFC8D3";
+export const textAColor = "#FFD3D8";
+export const textBColor = "#FF37EA";
+export const textCColor = "#FFFFFF";
