@@ -3,6 +3,7 @@
     import Todos from './Todos.svelte';
     import TextAnimation from './TextAnimation.svelte';
     import Datepicker from './Calendar/Datepicker.svelte';
+    import Styles from './style-buttons.css';
 
     import { lightAColor } from './style-constants';
     import { auth, googleProvider, testString } from './firebase';
@@ -88,6 +89,9 @@
                     end={inThirtyDays}
                     selectableCallback={noWeekendsSelectableCallback}
                 />
+            </div>
+            <div> 
+                <a href="#" class="btn btn-sm animated-button thar-three">Click</a> 
             </div>
         </div>
         <div class="todo-section">
