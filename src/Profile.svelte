@@ -11,8 +11,24 @@
     export let updateProfile;
 </script>
 
-<style>
+<div class="profile">
+    <div class="profile-img-wrapper">
+        <img class="profile-img" src={ photoURL } alt="user { uid }"> 
+        <h4>Hi, { displayName }!</h4>
+    </div>
+    <ul class="account-info"><h4>Account Information</h4>
+        <li>Email: {email}</li>
+        <li>Phone: {phoneNumber === null ? "None" : phoneNumber}</li>
+        <br>
+        <li><a href={updateEmail}>Update Email</a></li>
+        <li><a href={updatePhoneNumber}>Update Phone</a></li>
+        <li><a href={updatePassword}>Update Password</a></li>
+        <li><a href={updateProfile}>Update Profile</a></li>
+        
+    </ul>
+</div>
 
+<style>
     .profile-img-wrapper{
         display: inline-flex;
     }
@@ -39,20 +55,3 @@
         padding-left: inherit;
     }
 </style>
-
-<div class="profile">
-    <div class="profile-img-wrapper">
-        <img class="profile-img" src={ photoURL } alt="user { uid }"> 
-        <h4>Hi, { displayName }!</h4>
-    </div>
-    <ul class="account-info"><h4>Account Information</h4>
-        <li>Email: {email}</li>
-        <li>Phone: {phoneNumber === null ? "None" : phoneNumber}</li>
-        <br>
-        <li><a href={updateEmail}>Update Email</a></li>
-        <li><a href={updatePhoneNumber}>Update Phone</a></li>
-        <li><a href={updatePassword}>Update Password</a></li>
-        <li><a href={updateProfile}>Update Profile</a></li>
-        
-    </ul>
-</div>

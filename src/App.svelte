@@ -153,7 +153,7 @@ button{
         <div class="calendar-section">
             <div class="calendar">
                 <Datepicker
-                    format="{formatDate}"
+                    format="{dateFormat}"
                     start={threeDaysInPast}
                     end={inThirtyDays}
                     selectableCallback={noWeekendsSelectableCallback}

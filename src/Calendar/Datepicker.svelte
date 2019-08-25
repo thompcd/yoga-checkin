@@ -4,8 +4,9 @@
   import Popover from './Popover.svelte';
   import { dayDict } from './lib/dictionaries';
   import { getMonths, areDatesEquivalent } from './lib/helpers';
-  import { formatDate } from 'timeUtils';
   import { keyCodes, keyCodesArray } from './lib/keyCodes';
+
+  import { formatDate } from 'timeUtils';
   import { onMount, createEventDispatcher } from 'svelte';
 
   const dispatch = createEventDispatcher();
@@ -13,7 +14,7 @@
 
   let popover;
 
-  export let format = '#{m}/#{d}/#{Y}';
+  export let format = "#{m}/#{d}/#{Y}";
   export let start = new Date(1987, 9, 29);
   export let end = new Date(2020, 9, 29);
   export let selected = today;
