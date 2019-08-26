@@ -3,7 +3,7 @@
     import Todos from './Todos.svelte';
     import TextAnimation from './TextAnimation.svelte';
     import Datepicker from './Calendar/Datepicker.svelte';
-    import Styles from './style-buttons.css';
+    import AnimatedButton from './AnimatedButton.svelte';
 
     import { lightAColor } from './style-constants';
     import { auth, googleProvider, testString } from './firebase';
@@ -19,7 +19,8 @@
 	let dateFormat = '#{l}, #{F} #{j}, #{Y}';
 	let noWeekendsSelectableCallback = (date) => date.getDay() !== 0 && date.getDay() !== 6;
 	let formattedSelected;
-	let dateChosen = false;
+    let dateChosen = false;
+    let selected ;
 	let exampleFormatted = false;
 	let exampleChosen = false;
 	
@@ -46,7 +47,7 @@
 	  inThirtyDays = date;
 	}
 
-	const logchoice = (date) => {
+	function logchoice(date){
 	  // eslint-disable-next-line
 	  console.log(`User chose ${date}.`);
     }
@@ -57,7 +58,7 @@
 	//   // eslint-disable-next-line
 	//   hljs.initHighlightingOnLoad();
 	// });
-
+    
     let w = window,
     d = document,
     e = d.documentElement,
@@ -83,7 +84,8 @@
         </div>
         <div class="calendar-section">
             <div class="calendar">
-                <Datepicker
+                <Datepicker bind:dateChosen 
+                    bind:selected
                     format="{dateFormat}"
                     start={threeDaysInPast}
                     end={inThirtyDays}
@@ -91,7 +93,7 @@
                 />
             </div>
             <div> 
-                <a href="#" class="btn btn-sm animated-button thar-three">Click</a> 
+                <button on:click={() => console.log({selected})}>Log Selected Date</button>
             </div>
         </div>
         <div class="todo-section">
@@ -125,11 +127,11 @@
     justify-content: space-around;
 }
 
-button{
+/* button{
 	max-height: 36px;
     background-color: #FF5CAD;
     margin: auto;
-}
+} */
 
 .profile-section{
     border: 1px solid #888;
