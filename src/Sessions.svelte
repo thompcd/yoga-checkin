@@ -1,36 +1,43 @@
 <script>
+    import SessionItem from './SessionItem.svelte';
     import { db } from './firebase';
     import { collectionData } from 'rxfire/firestore';
     import { startWith } from 'rxjs/operators';
 
-    import Session from 'Session.svelte';
-
     // User ID passed from parent
-    export let uid;
+    export let creatorUid;
 
     // Form Text
-
+    let isEnrollmentOpen = true;
+    let sessionName = '';
+    let start = new Date();
+    let durationMinutes = 45;
+    let studentList = ['Corey','Johnny'];
+    let instructorList = ['Confucious'];
+    let type = 'Rebel Flow';
 
 
     // Query requires an index, see screenshot below
-    const query = db.collection('sessions').where('uid', '==', uid).orderBy('created');
+    const query = db.collection('sessions').where('isEnrollmentOpen', '==', true).orderBy('start');
 
     const sessions = collectionData(query, 'id').pipe(startWith([]));
 
     function add() {
-        db.collection('sessions').add({ uid, sessionName, start, duration, studentList, instructorList, type});
+        console.log("db write: ", {isEnrollmentOpen, creatorUid, sessionName, start, durationMinutes, studentList, instructorList, type});
+        db.collection('sessions').add({isEnrollmentOpen, creatorUid, sessionName, start, durationMinutes, studentList, instructorList, type});
         sessionName = '';
     }
 
-    // function updateStatus(event) {
-    //     const { id, newStatus } = event.detail;
-    //     db.collection('todos').doc(id).update({ complete: newStatus });
-    // }
+     function updateStatus(event) {
+         const { id, newStatus } = event.detail;
+         db.collection('sessions').doc(id).update({ isEnrollmentOpen: newStatus });
+     }
 
-    // function removeItem(event) {
-    //     const { id } = event.detail;
-    //     db.collection('todos').doc(id).delete();
-    // }
+     function removeItem(event) {
+         const { id } = event.detail;
+         db.collection('sessions').doc(id).delete();
+     }
+
 </script>
 
 <style>
@@ -43,13 +50,13 @@
 
 <ul>
 	{#each $sessions as session}
-        <TodoItem {...session} on:remove={removeItem} on:toggle={updateStatus} />
+        <SessionItem {...session} on:remove={removeItem} on:toggle={updateStatus} />
         
 	{/each}
 </ul>
 
-<div id="add-task">
-    <input bind:value={Session.sessionName}>
+<div id="add-session">
+    <input placeholder="Class Name" bind:value={sessionName}>
 
     <button on:click={add}>Add Session</button>
 </div>

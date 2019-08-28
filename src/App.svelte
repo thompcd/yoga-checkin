@@ -1,6 +1,7 @@
 <script>
     import Profile from './Profile.svelte';
     import Todos from './Todos.svelte';
+    import Sessions from './Sessions.svelte';
     import TextAnimation from './TextAnimation.svelte';
     import Datepicker from './Calendar/Datepicker.svelte';
     import AnimatedButton from './AnimatedButton.svelte';
@@ -96,9 +97,9 @@
                 <button on:click={() => console.log({selected})}>Log Selected Date</button>
             </div>
         </div>
-        <div class="todo-section">
-            <div class="todo">
-                <Todos uid={user.uid} />
+        <div class="sessions-section">
+            <div class="sessions">
+                <Sessions creatorUid={user.uid} />
             </div>
         </div>
 {:else}
@@ -140,7 +141,7 @@
     padding: 16px;
 }
 
-.todo-section{
+.sessions-section{
     display: flex;
     flex: 1;
     background-color: white;
@@ -174,7 +175,7 @@
     display: flex;
 }
 
-.todo{
+.sessions{
     display: flex;
     flex-direction: column;
 }
