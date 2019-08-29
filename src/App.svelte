@@ -93,9 +93,6 @@
                     selectableCallback={noWeekendsSelectableCallback}
                 />
             </div>
-            <div> 
-                <button on:click={() => console.log({selected})}>Log Selected Date</button>
-            </div>
         </div>
         <div class="sessions-section">
             <div class="sessions">
@@ -143,6 +140,7 @@
 
 .sessions-section{
     display: flex;
+    max-width: 300px;
     flex: 1;
     background-color: white;
     padding: 16px;

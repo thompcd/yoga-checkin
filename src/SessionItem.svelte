@@ -29,15 +29,15 @@
 </script>
 
 <style>
-
+.session-text{
+}
 </style>
 
 
 <li>
 
 {#if isEnrollmentOpen}
-    <span></span>
-    <span class="is-open">{ sessionName }</span>
+    <span class="session-text">{ sessionName }</span>
     <button on:click={toggleStatus}> Disable enrollment 🚫 </button>
 {/if}
 
