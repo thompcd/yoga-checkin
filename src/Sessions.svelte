@@ -12,14 +12,22 @@
     let isEnrollmentOpen = true;
     let sessionName = '';
     let start = new Date();
+    let temp = new Date(start);
+    let tomorrow = new Date().setDate(temp.getDate() + 1);
+    let yesterday = new Date().setDate(temp.getDate() - 1);
     let durationMinutes;
     let studentList = '';
     let instructorList = '';
     let type = '';
 
-
     // Query requires an index, see screenshot below
-    const query = db.collection('sessions').where('start', '<', start).orderBy('start');
+    const query = db.collection('sessions')
+        .where('start', '<', start)
+        //.where('start', '>', yesterday)
+        .orderBy('start');
+
+    // use for finding all classes with student
+    //citiesRef.where("regions", "array-contains", "west_coast")
 
     const sessions = collectionData(query, 'id').pipe(startWith([]));
 
@@ -32,7 +40,6 @@
         instructorList = '';
         type = ''
         isEnrollmentOpen = true;
-
     }
 
      function updateStatus(event) {
@@ -45,8 +52,10 @@
          db.collection('sessions').doc(id).delete();
      }
 
-     function addStudent(student) {
-        studentList = [...studentList, student];
+     function addStudent(event) {
+        const { id, newStudent } = event.detail;
+        console.log("adding student", id, newStudent);
+        db.collection('sessions').doc(id).update({studentList: [...studentList, newStudent]});
     }
 
     function displaySuccess(){
@@ -55,7 +64,50 @@
 
 </script>
 
+<form id="add-session" style="background-color:{primaryAColor};">
+    <label>Class Name </label>
+    <input required placeholder="e.g. Rebel Flow" bind:value={sessionName}>
+    <label>Class Type</label>
+    <input required placeholder="e.g. Meditation" bind:value={type}>
+    <label>Class Duration</label>
+    <input required type=number min=0 placeholder="Minutes" bind:value={durationMinutes}>
+    <label>Class Instructor</label>
+    <input required placeholder="Name" bind:value={instructorList}>
+
+    <div class="check-label">
+        <input class="checkbox" type="checkbox" bind:checked={isEnrollmentOpen}>
+        {#if isEnrollmentOpen}
+        <p>Open for enrollment</p>
+        {:else}
+        <p class="is-closed">Open for enrollment</p>
+        {/if}
+    </div>
+
+    <div>        
+        <button on:click={add}>Add Session</button>
+        <div class="success-msg"></div>
+    </div>
+
+</form>
+
+<ul class="session-entry">
+	{#each $sessions as session}
+        <div class="session-item-wrapper">
+            <SessionItem class="session-item" {...session} on:remove={removeItem} on:toggle={updateStatus} on:addStudent={addStudent} />
+        </div>
+	{/each}
+</ul>
+
 <style>
+
+    ul{
+        padding:0px;
+    }
+
+    .session-item-wrapper{
+        width: 100%;
+    }
+
     #add-session{
         display: inline;
         padding: 16px;
@@ -86,37 +138,3 @@
         align-content: middle;
     }
 </style>
-
-<form id="add-session" style="background-color:{primaryAColor};">
-    <label>Class Name </label>
-    <input required placeholder="e.g. Rebel Flow" bind:value={sessionName}>
-    <label>Class Type</label>
-    <input required placeholder="e.g. Meditation" bind:value={type}>
-    <label>Class Duration</label>
-    <input required type=number min=0 placeholder="Minutes" bind:value={durationMinutes}>
-    <label>Class Instructor</label>
-    <input required placeholder="Name" bind:value={instructorList}>
-
-    <div class="check-label">
-        <input class="checkbox" type="checkbox" bind:checked={isEnrollmentOpen}>
-        {#if isEnrollmentOpen}
-        <p>Open for enrollment</p>
-        {:else}
-        <p class="is-closed">Open for enrollment</p>
-        {/if}
-    </div>
-
-    <div>        
-        <button on:click={add}>Add Session</button>
-        <div class="success-msg"></div>
-    </div>
-
-</form>
-
-<ul class="session-entry">
-	{#each $sessions as session}
-        <SessionItem {...session} on:remove={removeItem} on:toggle={updateStatus} />
-        
-	{/each}
-</ul>
-
