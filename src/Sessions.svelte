@@ -7,14 +7,13 @@
 
     // User ID passed from parent
     export let creatorUid;
+    export let lowerDateRange;
+    export let upperDateRange;
+    let start;
 
     // Form Text
     let isEnrollmentOpen = true;
     let sessionName = '';
-    let start = new Date();
-    let temp = new Date(start);
-    let tomorrow = new Date().setDate(temp.getDate() + 1);
-    let yesterday = new Date().setDate(temp.getDate() - 1);
     let durationMinutes;
     let studentList = '';
     let instructorList = '';
@@ -22,8 +21,8 @@
 
     // Query requires an index, see screenshot below
     const query = db.collection('sessions')
-        .where('start', '<', start)
-        //.where('start', '>', yesterday)
+        .where('start', '<=', toUpperDate(upperDateRange))
+        .where('start', '>=', toLowerDate(lowerDateRange))
         .orderBy('start');
 
     // use for finding all classes with student
@@ -31,15 +30,33 @@
 
     const sessions = collectionData(query, 'id').pipe(startWith([]));
 
+    function toUpperDate(date) {
+        var result = new Date(date);
+        result.setHours(24,0,0,0);
+        return new Date(result);
+    }
+
+    function toLowerDate(date) {
+        var result = new Date(date);
+        result.setHours(0,0,0,0);
+        return new Date(result);
+    }
+
     function add() {
+        start = new Date();
         console.log("db write: ", {isEnrollmentOpen, creatorUid, sessionName, start, durationMinutes, studentList, instructorList, type});
         db.collection('sessions').add({isEnrollmentOpen, creatorUid, sessionName, start, durationMinutes, studentList, instructorList, type});
         sessionName = '';
-        start = new Date();
         durationMinutes = '';
         instructorList = '';
         type = ''
         isEnrollmentOpen = true;
+    }
+
+    function test() {
+        console.log("db write: ", {isEnrollmentOpen, creatorUid, sessionName, start, durationMinutes, studentList, instructorList, type});
+        console.log("Yesterday", toLowerDate(lowerDateRange))
+        console.log("tomorrow", toUpperDate(upperDateRange))
     }
 
      function updateStatus(event) {
@@ -85,6 +102,10 @@
 
     <div>        
         <button on:click={add}>Add Session</button>
+        <div class="success-msg"></div>
+    </div>
+        <div>        
+        <button on:click={test}>Test</button>
         <div class="success-msg"></div>
     </div>
 

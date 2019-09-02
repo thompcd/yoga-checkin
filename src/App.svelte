@@ -21,9 +21,9 @@
 	let noWeekendsSelectableCallback = (date) => date.getDay() !== 0 && date.getDay() !== 6;
 	let formattedSelected;
     let dateChosen = false;
-    let selected ;
 	let exampleFormatted = false;
-	let exampleChosen = false;
+    let exampleChosen = false;
+    let selected = new Date();
 	
 	$: end = new Date(start.getTime() + 1000 * 3600 * 24 * 720);
 	
@@ -53,8 +53,6 @@
 	  console.log(`User chose ${date}.`);
     }
     
-
-
 	// onMount(() => {
 	//   // eslint-disable-next-line
 	//   hljs.initHighlightingOnLoad();
@@ -73,6 +71,12 @@
 
     function login() {
         auth.signInWithPopup(googleProvider);
+    }
+
+    function addDays(date, days) {
+        var result = new Date(date);
+        result.setDate(result.getDate() + days);
+        return result;
     }
 </script>
 
@@ -96,7 +100,10 @@
         </div>
         <div class="sessions-section">
             <div class="sessions">
-                <Sessions creatorUid={user.uid} />
+                <Sessions creatorUid={user.uid}
+                    lowerDateRange={selected}
+                    upperDateRange={selected}
+                     />
             </div>
         </div>
 {:else}
