@@ -7,7 +7,7 @@
     import AnimatedButton from './AnimatedButton.svelte';
 
     import { lightAColor } from './style-constants';
-    import { auth, googleProvider, testString } from './firebase';
+    import { auth, googleProvider } from './firebase';
     import { authState } from 'rxfire/auth';
     import { formatDate } from 'timeUtils'
     import { onMount } from 'svelte';
@@ -101,8 +101,8 @@
         <div class="sessions-section">
             <div class="sessions">
                 <Sessions creatorUid={user.uid}
-                    lowerDateRange={selected}
-                    upperDateRange={selected}
+                    bind:lowerDateRange={selected}
+                    bind:upperDateRange={selected}
                      />
             </div>
         </div>
