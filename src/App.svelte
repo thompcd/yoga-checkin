@@ -1,7 +1,8 @@
 <script>
     import Profile from './Profile.svelte';
     import Todos from './Todos.svelte';
-    import Sessions from './Sessions.svelte';
+    import Sessions from './Sessions/Sessions.svelte';
+    import AddSessionForm from './Sessions/AddSessionForm.svelte';
     import TextAnimation from './TextAnimation.svelte';
     import Datepicker from './Calendar/Datepicker.svelte';
     import AnimatedButton from './AnimatedButton.svelte';
@@ -89,18 +90,15 @@
         </div>
         <div class="calendar-section">
             <div class="calendar">
-                <Datepicker bind:dateChosen 
-                    bind:selected
-                    format="{dateFormat}"
-                    start={threeDaysInPast}
-                    end={inThirtyDays}
-                    selectableCallback={noWeekendsSelectableCallback}
-                />
             </div>
+                <AddSessionForm creatorUid={user.uid}
+                    bind:lowerDateRange={selected}
+                    bind:upperDateRange={selected}
+                    />
         </div>
         <div class="sessions-section">
             <div class="sessions">
-                <Sessions creatorUid={user.uid}
+                <Sessions
                     bind:lowerDateRange={selected}
                     bind:upperDateRange={selected}
                      />
@@ -129,7 +127,7 @@
 
 .container{
     display:flex;
-    justify-content: space-around;
+    justify-content: stretch;
 }
 
 /* button{

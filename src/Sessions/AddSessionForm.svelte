@@ -1,17 +1,16 @@
 <script>
     import SessionItem from './SessionItem.svelte';
-    import { db } from './firebase';
+    import { db } from '../firebase';
     import { collectionData } from 'rxfire/firestore';
     import { startWith } from 'rxjs/operators';
-    import { primaryAColor } from './style-constants';
+    import { primaryAColor } from '../style-constants';
 
     // User ID passed from parent
     export let creatorUid;
     export let lowerDateRange;
     export let upperDateRange;
     let start;
-
-    // Form Text
+        // Form Text
     let isEnrollmentOpen = true;
     let sessionName = '';
     let durationMinutes;
@@ -25,12 +24,9 @@
         .where('start', '>=', toLowerDate(lowerDateRange))
         .orderBy('start');
 
-    // use for finding all classes with student
-    //citiesRef.where("regions", "array-contains", "west_coast")
-
     const sessions = collectionData(query, 'id').pipe(startWith([]));
 
-    function toUpperDate(date) {
+        function toUpperDate(date) {
         var result = new Date(date);
         result.setHours(24,0,0,0);
         return new Date(result);
@@ -42,6 +38,12 @@
         return new Date(result);
     }
 
+    function test() {
+        console.log("db write: ", {isEnrollmentOpen, sessionName, start, durationMinutes, studentList, instructorList, type});
+        console.log("Yesterday", toLowerDate(lowerDateRange))
+        console.log("tomorrow", toUpperDate(upperDateRange))
+    }
+
     function add() {
         start = new Date();
         console.log("db write: ", {isEnrollmentOpen, creatorUid, sessionName, start, durationMinutes, studentList, instructorList, type});
@@ -51,32 +53,6 @@
         instructorList = '';
         type = ''
         isEnrollmentOpen = true;
-    }
-
-    function test() {
-        console.log("db write: ", {isEnrollmentOpen, creatorUid, sessionName, start, durationMinutes, studentList, instructorList, type});
-        console.log("Yesterday", toLowerDate(lowerDateRange))
-        console.log("tomorrow", toUpperDate(upperDateRange))
-    }
-
-     function updateStatus(event) {
-         const { id, newStatus } = event.detail;
-         db.collection('sessions').doc(id).update({ isEnrollmentOpen: newStatus });
-     }
-
-     function removeItem(event) {
-         const { id } = event.detail;
-         db.collection('sessions').doc(id).delete();
-     }
-
-     function addStudent(event) {
-        const { id, newStudent } = event.detail;
-        console.log("adding student", id, newStudent);
-        db.collection('sessions').doc(id).update({studentList: [...studentList, newStudent]});
-    }
-
-    function displaySuccess(){
-
     }
 
 </script>
@@ -111,35 +87,13 @@
 
 </form>
 
-<ul class="session-entry">
-	{#each $sessions as session}
-        <div class="session-item-wrapper">
-            <SessionItem class="session-item" {...session} on:remove={removeItem} on:toggle={updateStatus} on:addStudent={addStudent} />
-        </div>
-	{/each}
-</ul>
-
 <style>
-
-    ul{
-        padding:0px;
-    }
-
-    .session-item-wrapper{
-        width: 100%;
-    }
-
     #add-session{
-        display: inline;
         padding: 16px;
         border-radius: 8px;
     }
 
     input { display: flex }
-
-    .session-entry{
-        list-style: none;
-    }
 
     .is-closed{
         text-decoration: line-through;
@@ -158,4 +112,5 @@
     .check-label .checkbox{
         align-content: middle;
     }
+
 </style>
