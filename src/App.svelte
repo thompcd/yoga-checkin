@@ -111,10 +111,12 @@
             <TextAnimation visible=true drawText={startText}/>
         </div>
         <div class="login">
-            <img class="login-img" src='./img/rebelYoga.jpeg' alt="rebel yoga">
-            <button on:click={login}>
-            Login
-            </button>
+            <div id="login-image-wrapper">
+                <img class="login-img" src='./img/rebelYoga.jpeg' alt="rebel yoga">
+                <button class="login-btn" on:click={login}>
+                Login
+                </button>
+            </div>
         </div>
     </div>
 {/if}
@@ -158,20 +160,30 @@
  }
 
 .login{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    height: 250px;
-    margin: auto;
+    position: absolute;
+    left: 50%;
+    top: 30%;
 }
 
-.login-img{
+.login-img{    
     max-height: 300px;
     max-width: 300px;
     margin: auto;
     padding-right: 24px;
     padding-top: 50px;
+}
+
+#login-image-wrapper{
+    position: relative; 
+    left: -50%;
+    top: -30%;
+ }
+
+ .login-btn{
+    position: absolute; 
+    top: 50%;
+    width: 75px;
+    height: 50px;
  }
 
 .calendar{

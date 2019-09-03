@@ -26,7 +26,7 @@
 
     const sessions = collectionData(query, 'id').pipe(startWith([]));
 
-        function toUpperDate(date) {
+    function toUpperDate(date) {
         var result = new Date(date);
         result.setHours(24,0,0,0);
         return new Date(result);
@@ -57,7 +57,7 @@
 
 </script>
 
-<form id="add-session" style="background-color:{primaryAColor};">
+<form id="add-session">
     <label>Class Name </label>
     <input required placeholder="e.g. Rebel Flow" bind:value={sessionName}>
     <label>Class Type</label>
@@ -80,10 +80,6 @@
         <button on:click={add}>Add Session</button>
         <div class="success-msg"></div>
     </div>
-        <div>        
-        <button on:click={test}>Test</button>
-        <div class="success-msg"></div>
-    </div>
 
 </form>
 
@@ -91,6 +87,7 @@
     #add-session{
         padding: 16px;
         border-radius: 8px;
+        border: 2px solid black;
     }
 
     input { display: flex }

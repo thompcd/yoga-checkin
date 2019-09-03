@@ -6,24 +6,7 @@
     import { primaryAColor } from '../style-constants';
     import Datepicker from '../Calendar/Datepicker.svelte';
 
-    // User ID passed from parent
-    export let lowerDateRange;
-    export let upperDateRange;
-
-    //
-        const today = new Date();
-	let start = new Date();
-	let dateFormat = '#{l}, #{F} #{j}, #{Y}';
-	let noWeekendsSelectableCallback = (date) => date.getDay() !== 0 && date.getDay() !== 6;
-	let formattedSelected;
-    let dateChosen = false;
-	let exampleFormatted = false;
-    let exampleChosen = false;
-    let selected = new Date();
-	
-	$: end = new Date(start.getTime() + 1000 * 3600 * 24 * 720);
-	
-	let threeDaysInPast;
+    let threeDaysInPast;
 	$: {
 	  const date = new Date(today);
 	  date.setDate(date.getDate() - 3);
@@ -43,6 +26,22 @@
 	  date.setDate(date.getDate() + 365);
 	  inThirtyDays = date;
 	}
+    
+    // User ID passed from parent
+    export let lowerDateRange = threeDaysInPast;
+    export let upperDateRange = tomorrow;
+
+    const today = new Date();
+	let start = new Date();
+	let dateFormat = '#{l}, #{F} #{j}, #{Y}';
+	let noWeekendsSelectableCallback = (date) => date.getDay() !== 0 && date.getDay() !== 6;
+	let formattedSelected;
+    let dateChosen = false;
+	let exampleFormatted = false;
+    let exampleChosen = false;
+    let selected = new Date();
+	
+	$: end = new Date(start.getTime() + 1000 * 3600 * 24 * 720);
 
     // Query requires an index, see screenshot below
     const query = db.collection('sessions')
