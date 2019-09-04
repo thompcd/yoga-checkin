@@ -118,7 +118,7 @@
         <div id="login-animation" style="top:24px; left:24px; height:{h/4}px;">
             <TextAnimation visible=true drawText={startText}/>
         </div>
-        <div class="login" style="position:absolute; top:{h/3}px; left:{(w/2)-150}px;">
+        <div class="login box" style="position:absolute; top:{h/3}px; left:{(w/2)-150}px;">
             <div id="login-image-wrapper">
                 <img class="login-img" src='./img/rebelYoga.jpeg' alt="rebel yoga">
                 <button class="login-btn" on:click={login}>
@@ -136,6 +136,7 @@
     display: flex;
     flex-direction: column;
 }
+
 #main-nav{
     overflow: hidden;
     height: 40px;
@@ -146,6 +147,11 @@
     box-shadow: 0px 15px 10px -20px rgba(0,0,0,1);
     background-color: white;
 }
+  .box{
+    -webkit-box-shadow: 16px 16px 10px -19px rgba(0,0,0,1);
+    -moz-box-shadow: 16px 16px 10px -19px rgba(0,0,0,1);
+    box-shadow: 16px 16px 10px -19px rgba(0,0,0,1);
+  }
 
 #main-nav img{
   float: left;
