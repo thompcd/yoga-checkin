@@ -57,7 +57,7 @@
 
 </script>
 
-<form id="add-session">
+<form id="add-session" class="box">
     <label>Class Name </label>
     <input required placeholder="e.g. Rebel Flow" bind:value={sessionName}>
     <label>Class Type</label>
@@ -84,12 +84,20 @@
 </form>
 
 <style>
+
+    form{
+        background-color: white;
+    }
     #add-session{
         padding: 16px;
         border-radius: 8px;
-        border: 2px solid black;
     }
 
+    .box{
+        -webkit-box-shadow: 16px 16px 10px -19px rgba(0,0,0,1);
+        -moz-box-shadow: 16px 16px 10px -19px rgba(0,0,0,1);
+        box-shadow: 16px 16px 10px -19px rgba(0,0,0,1);
+    }
     input { display: flex }
 
     .is-closed{
@@ -108,6 +116,20 @@
     }
     .check-label .checkbox{
         align-content: middle;
+    }
+
+    button{
+    border-radius: 24px;
+    background-color: #c93756;
+    border-color: #c93756;
+    color: white;
+    transition: background-color 0.4s ease,
+              border-color 0.3s ease;
+    }
+    button:hover{
+        background-color: white;
+        color: black;
+        border-color: #c93756;
     }
 
 </style>

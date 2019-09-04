@@ -123,6 +123,12 @@
     position: relative;
   }
 
+    .box{
+      -webkit-box-shadow: 16px 16px 10px -19px rgba(0,0,0,1);
+      -moz-box-shadow: 16px 16px 10px -19px rgba(0,0,0,1);
+      box-shadow: 16px 16px 10px -19px rgba(0,0,0,1);
+    }
+
   .contents-wrapper { 
     transform: translate(-50%, -50%); 
     position: absolute;

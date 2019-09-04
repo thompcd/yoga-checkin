@@ -201,7 +201,7 @@
     <div slot="trigger">
       <slot>
         {#if !trigger}
-        <button class="calendar-button" type="button">
+        <button class="calendar-button box" type="button">
           {formattedSelected}
         </button>
         {/if}
@@ -242,8 +242,13 @@
     cursor: pointer;
     background: #fff;
     border-radius: 7px;
-    box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.1);
   }
+
+    .box{
+      -webkit-box-shadow: 16px 16px 10px -19px rgba(0,0,0,1);
+      -moz-box-shadow: 16px 16px 10px -19px rgba(0,0,0,1);
+      box-shadow: 16px 16px 10px -19px rgba(0,0,0,1);
+    }
 
   *,
   *:before,

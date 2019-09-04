@@ -40,6 +40,7 @@
 	let exampleFormatted = false;
     let exampleChosen = false;
     let selected = new Date();
+    let studentList = [];
 	
 	$: end = new Date(start.getTime() + 1000 * 3600 * 24 * 720);
 
@@ -88,13 +89,13 @@
 
 </script>
 <div class="inline" >
-<h3 id="schedule-text">Schedule For </h3><Datepicker bind:dateChosen 
-                    bind:selected
-                    format="{dateFormat}"
-                    start={threeDaysInPast}
-                    end={inThirtyDays}
-                    selectableCallback={noWeekendsSelectableCallback}
-                />
+    <Datepicker bind:dateChosen 
+        bind:selected
+        format="{dateFormat}"
+        start={threeDaysInPast}
+        end={inThirtyDays}
+        selectableCallback={noWeekendsSelectableCallback}
+    />
 </div>
 <ul class="session-entry">
 	{#each $sessions as session}
@@ -123,5 +124,8 @@
         align-items: end;
     }
 
-    #schedule-text{min-width:130px;}
+    #schedule-text{
+        min-width:130px;
+        color: white;
+    }
 </style>

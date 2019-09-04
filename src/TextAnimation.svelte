@@ -33,9 +33,8 @@
 		transform: translate(-50%,-100%); */
 		font-family: 'Overpass';
 		letter-spacing: 0.12em;
-		color: #676778;
+		color: white;
 		font-weight: 100;
-		z-index: -10000;
 	}
 
 	.centered span {

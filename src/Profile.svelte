@@ -1,4 +1,8 @@
 <script>
+    import { auth, googleProvider } from './firebase';
+    import { authState } from 'rxfire/auth';
+
+    let user;
     export let displayName;
     export let photoURL;
     export let uid;
@@ -9,9 +13,15 @@
     export let updatePhoneNumber;
     export let updatePassword;
     export let updateProfile;
+
+    const unsubscribe = authState(auth).subscribe(u => user = u);
+
+    function login() {
+        auth.signInWithPopup(googleProvider);
+    }
 </script>
 
-<div class="profile">
+<div class="profile box">
     <div class="profile-img-wrapper">
         <img class="profile-img" src={ photoURL } alt="user { uid }"> 
         <h4>Hi, { displayName }!</h4>
@@ -26,6 +36,7 @@
         <li><a href={updateProfile}>Update Profile</a></li>
         
     </ul>
+    <button on:click={ () => auth.signOut() }>Logout</button>
 </div>
 
 <style>
@@ -46,6 +57,8 @@
     .profile{
         display: flex;
         flex-direction: column;
+        z-index: 10000;
+        padding: 16px;
     }
 
     .profile li{
@@ -55,9 +68,24 @@
     .profile-img{
         width: 50px;
         height: 50px;
+        border-radius:25px;
     }
 
     .account-info{
         padding-left: inherit;
     }
+
+    button{
+    border-radius: 24px;
+    background-color: #c93756;
+    border-color: #c93756;
+    color: white;
+    transition: background-color 0.4s ease,
+              border-color 0.3s ease;
+}
+ button:hover{
+     background-color: white;
+     color: black;
+     border-color: #c93756;
+ }
 </style>

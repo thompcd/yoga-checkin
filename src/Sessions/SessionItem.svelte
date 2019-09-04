@@ -77,11 +77,8 @@
         flex-direction: column;
         padding: 32px;
         width: 200px;
-        border: 2px solid black;
         border-radius: 8px;
-    }
-
-        .session-item:active{
+        background-color: white;
     }
 
     #title-row{
@@ -100,17 +97,18 @@
     .icon{
         width: 24px;
         height: 24px;
+        -moz-transition: all .3s linear;
+        -webkit-transition: all .3s linear;
+        transition: all .3s linear;
+        user-select: none; /* supported by Chrome and Opera */
+        -webkit-user-select: none; /* Safari */
+        -khtml-user-select: none; /* Konqueror HTML */
+        -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
     }
 
-    .icon{
-    -moz-transition: all .3s linear;
-    -webkit-transition: all .3s linear;
-    transition: all .3s linear;
-    user-select: none; /* supported by Chrome and Opera */
-    -webkit-user-select: none; /* Safari */
-    -khtml-user-select: none; /* Konqueror HTML */
-    -moz-user-select: none; /* Firefox */
-    -ms-user-select: none; /* Internet Explorer/Edge */
+    .icon:hover, button:hover{
+        cursor: pointer;
     }
 
     .detailView{
@@ -125,26 +123,39 @@
         margin: 0;
     }
 
-    .isEnrollmentOpen{
-    }
-
     .inline-icon{
         padding-top: 4px;
         padding-left: 8px;
+    }
+
+    #remove-student-icon{
+        padding-left: 8px;
+        padding-bottom: 4px;
+        height: 16px;
+        width: 16px;
+    }
+
+    .box{
+        -webkit-box-shadow: 16px 16px 10px -19px rgba(0,0,0,1);
+        -moz-box-shadow: 16px 16px 10px -19px rgba(0,0,0,1);
+        box-shadow: 16px 16px 10px -19px rgba(0,0,0,1);
     }
 </style>
 
 
 <div class="item-wrapper">
-    <li class="session-item">
+    <li class="session-item box">
         <div class="row" id="title-row">
             <h3 class="session-text">{ sessionName }</h3>
+            <svg class="icon" class:detailView on:click={toggleDetailView}>
+                <path></path>
+            </svg>
             <img class="icon" class:detailView src='./img/expand-arrow.svg' alt='expand' on:click={toggleDetailView}>
         </div>
         {#if detailView}
         <div transition:slide>
             <div class="row">
-                <img class="icon" src='./img/delete-circle.svg' alt='delete' on:click={remove}>
+                <img class="icon" src='./img/trash.svg' alt='delete' on:click={remove}>
             </div>
             <div class="row">
                 <img class="icon" src={enrollIconURL} class:isEnrollmentOpen  alt='un/lock enrollment' on:click={toggleStatus}>
@@ -153,7 +164,7 @@
             <ul class="students detail-view">
                 {#each studentList as student}
                 <div class="row">
-                    <button on:click={removeStudent}> ➖ </button>{student}
+                    {student}<img class="icon" id="remove-student-icon" src='./img/delete-circle.svg' alt='delete' on:click={removeStudent}>
                 </div>
                 {/each}
             </ul>
