@@ -16,7 +16,6 @@
 		dispatch('addStudent', {
             id,
             newStudent });
-        newStudent = '';
     }
 
         function removeStudent() {

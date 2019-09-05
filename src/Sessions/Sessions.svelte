@@ -79,8 +79,10 @@
 
      function addStudent(event) {
         const { id, newStudent } = event.detail;
+        console.log("existing list:", studentList);
         console.log("adding student", id, newStudent);
         db.collection('sessions').doc(id).update({studentList: [...studentList, newStudent]});
+        console.log("new list:", studentList);
     }
 
     function displaySuccess(){
