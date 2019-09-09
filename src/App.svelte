@@ -1,4 +1,6 @@
 <script>
+    import 'bulma/css/bulma.css'
+
     import Profile from './Profile.svelte';
     import Sessions from './Sessions/Sessions.svelte';
     import AddSessionForm from './Sessions/AddSessionForm.svelte';
@@ -12,7 +14,12 @@
     import { formatDate } from 'timeUtils'
     import { onMount } from 'svelte';
     import { slide } from 'svelte/transition';
+    import { Button, Snackbar } from 'svelma'
 
+  function open(type, position) {
+    Snackbar.create({ message: 'YUMALSDJFAKLSDJFLKJS!',duration:5000, type:"is-success", position:"top-right" })
+  }
+  
     let user;
     let w;
     let h;
@@ -80,9 +87,9 @@
     }
 
 </script>
-<svelte:window bind:innerHeight={h} bind:innerWidth={w}/>
-<section style="height: {h}px; width=width: {w}px; background-color:#676778;">
-
+<!-- <svelte:window bind:innerHeight={h} bind:innerWidth={w}/> -->
+<!-- <section style="height: {h}px; width=width: {w}px; background-color:#676778;"> -->
+<section style="background-color:#676778;">
 <!-- <div class="container" style={height}> -->
 {#if user}
 <nav id="main-nav">
@@ -155,7 +162,6 @@
 
 #main-nav img{
   float: left;
-  color: #f2f2f2;
   text-align: center;
   padding: 8px 16px;
   text-decoration: none;
@@ -165,8 +171,7 @@
 }
 
 #menu-btn{
-    fill: white;
-    z-index: 10000;
+    fill: black;
 }
 .container{
     display:flex;
