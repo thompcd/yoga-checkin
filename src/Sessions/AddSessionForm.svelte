@@ -4,7 +4,16 @@
     import { collectionData } from 'rxfire/firestore';
     import { startWith } from 'rxjs/operators';
     import { primaryAColor } from '../style-constants';
-    import { Field, Input, Snackbar, Switch } from 'svelma'
+    import { createEventDispatcher } from 'svelte';
+    import Button from '@smui/button';
+    import Switch from '@smui/switch';
+    import FormField from '@smui/form-field';
+    import Textfield, {Input, Textarea} from '@smui/textfield';
+    import Icon from '@smui/textfield/icon';
+    import HelperText from '@smui/textfield/helper-text';
+
+    const dispatch = createEventDispatcher();
+    let actionStatus = "success";
 
     // User ID passed from parent
     export let creatorUid;
@@ -14,10 +23,13 @@
         // Form Text
     let isEnrollmentOpen = true;
     let sessionName = '';
-    let durationMinutes;
+    let durationMinutes = '';
     let studentList = '';
-    let instructorList = '';
+    let instructorList = [''];
     let type = '';
+    let mySnackbar;
+    let status = 'default';
+    let position = 'is-top-right';
 
     // Query requires an index, see screenshot below
     const query = db.collection('sessions')
@@ -45,13 +57,18 @@
             start = new Date();
             console.log("db write: ", {isEnrollmentOpen, creatorUid, sessionName, start, durationMinutes, studentList, instructorList, type});
             db.collection('sessions').add({isEnrollmentOpen, creatorUid, sessionName, start, durationMinutes, studentList, instructorList, type});
-            open("is-success","is-top-right")
-
+            status = "Successfully created session"; 
         }
+        else{
+            status = "An error occurred";
+        }
+        notify(status, position);
+
     }
-    function open(type, position) {
-        Snackbar.create({ message: 'I am a snack', type: 'is-success', position: 'is-top-right' })
-    }
+
+    function notify(status, position) {
+		dispatch('notify', { status, position });
+	}
 
     function verifyForm(){
         return true;
@@ -59,29 +76,29 @@
 
 </script>
 
-<div id="add-session" class="box">
-    <Field label="Class Name" type="is-primary" message="">
-        <Input type="text" placeholder="e.g. Rebel Flow" bind:value={sessionName}></Input>
-    </Field>
-    <Field label="Class Type" type="is-primary" message="Class Type is required">
-        <Input type="text" required placeholder="e.g. Meditation" bind:value={type}></Input>
-    </Field>
-    <Field label="Class Duration" type="is-primary" message="Class Duration is required">
-        <Input required type="number" min=0 placeholder="Minutes" bind:value={durationMinutes}></Input>
-    </Field>
-    <Field label="Class Instructor" type="is-primary" message="Class Instructor is required">
-        <Input required type="text" placeholder="Name" bind:value={instructorList}></Input>
-    </Field>
-    <div class="submit-area">
-        <Switch bind:checked={isEnrollmentOpen}>Open for enrollment</Switch><br>
-        <button style="margin-top: 8px;" on:click={add}>Add Session</button>
-    </div>
+<div id="add-session" class="box form">
+    <Textfield variant="outlined" bind:value={sessionName} label="Name" input$aria-controls="helper-text-outlined-c" input$aria-describedby="helper-text-outlined-c"></Textfield>
+    <HelperText id="helper-text-outlined-c">e.g. Rebel Flow</HelperText>
+    <!-- withTrailingIcon={valueClickable !== ''} bind:dirty={dirtyClickable} bind:invalid={invalidClickable} updateInvalid bind:value={valueClickable} -->
+
+    <Textfield variant="outlined" bind:value={type} label="Type" input$aria-controls="helper-text-outlined-c" input$aria-describedby="helper-text-outlined-c"></Textfield>
+    <HelperText id="helper-text-outlined-c">e.g. Meditation</HelperText>
+
+    <Textfield type="number" variant="outlined" bind:value={durationMinutes} label="Duration" input$aria-controls="helper-text-outlined-c" input$aria-describedby="helper-text-outlined-c"></Textfield>
+    <HelperText id="helper-text-outlined-c">Minutes</HelperText>
+
+    <Textfield variant="outlined" bind:value={instructorList} label="Instructor" input$aria-controls="helper-text-outlined-c" input$aria-describedby="helper-text-outlined-c"></Textfield>
+    <HelperText id="helper-text-outlined-c">Name of Instructor</HelperText>
+
+    <FormField align="start">
+        <Switch bind:checked={isEnrollmentOpen}></Switch>
+        <span slot="label">Open for enrollment</span>
+    </FormField>
+    
+    <button style="margin-top: 8px;" on:click={add}>Add Session</button>
 </div>
 
 <style>
-    form{
-        background-color: white;
-    }
     #add-session{
         padding: 16px;
         border-radius: 8px;

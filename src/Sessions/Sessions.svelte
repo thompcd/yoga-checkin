@@ -5,6 +5,7 @@
     import { startWith } from 'rxjs/operators';
     import { primaryAColor } from '../style-constants';
     import Datepicker from '../Calendar/Datepicker.svelte';
+    import { createEventDispatcher } from 'svelte';
 
     let threeDaysInPast;
 	$: {
@@ -32,6 +33,7 @@
     export let upperDateRange = tomorrow;
 
     const today = new Date();
+    const dispatch = createEventDispatcher();
 	let start = new Date();
 	let dateFormat = '#{l}, #{F} #{j}, #{Y}';
 	let noWeekendsSelectableCallback = (date) => date.getDay() !== 0 && date.getDay() !== 6;
@@ -75,6 +77,7 @@
      function removeItem(event) {
          const { id } = event.detail;
          db.collection('sessions').doc(id).delete();
+         notify('Successfully removed session');
      }
 
      function addStudent(event) {
@@ -83,11 +86,12 @@
         console.log("adding student", id, newStudent);
         db.collection('sessions').doc(id).update({studentList: [...studentList, newStudent]});
         console.log("new list:", studentList);
+        notify('Successfully added student', 'is-bottom');
     }
 
-    function displaySuccess(){
-
-    }
+    function notify(status, position) {
+		dispatch('notify', { status, position });
+	}
 
 </script>
 <div class="inline" >
@@ -102,7 +106,10 @@
 <ul class="session-entry">
 	{#each $sessions as session}
         <div class="session-item-wrapper">
-            <SessionItem class="session-item" {...session} on:remove={removeItem} on:toggle={updateStatus} on:addStudent={addStudent} />
+            <SessionItem class="session-item" {...session} 
+            on:remove={removeItem} 
+            on:toggle={updateStatus} 
+            on:addStudent={addStudent} />
         </div>
 	{/each}
 </ul>
@@ -126,8 +133,4 @@
         align-items: end;
     }
 
-    #schedule-text{
-        min-width:130px;
-        color: white;
-    }
 </style>

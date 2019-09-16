@@ -106,7 +106,7 @@
         -ms-user-select: none; /* Internet Explorer/Edge */
     }
 
-    .icon:hover, button:hover{
+    .icon:hover{
         cursor: pointer;
     }
 

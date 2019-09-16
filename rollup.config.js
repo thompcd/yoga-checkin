@@ -23,7 +23,8 @@ export default {
 			// a separate file — better for performance
 			css: css => {
 				css.write('public/bundle.css');
-			}
+			},
+			emitCss: true
 		}),
 
 		// If you have external dependencies installed from
@@ -36,7 +37,18 @@ export default {
 			dedupe: importee => importee === 'svelte' || importee.startsWith('svelte/')
 		}),
 		commonjs(),
-		postcss(),
+		postcss({
+			extract: true,
+			minimize: true,
+			use: [
+			  ['sass', {
+				includePaths: [
+				  './theme',
+				  './node_modules'
+				]
+			  }]
+			]
+		  }),
 
 		// Watch the `public` directory and refresh the
 		// browser on changes when not in production
