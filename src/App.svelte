@@ -1,10 +1,12 @@
 <script>
+    import 'bulma/css/bulma.css'
+
     import Profile from './Profile.svelte';
     import Sessions from './Sessions/Sessions.svelte';
     import AddSessionForm from './Sessions/AddSessionForm.svelte';
     import TextAnimation from './TextAnimation.svelte';
     import Datepicker from './Calendar/Datepicker.svelte';
-    import AnimatedButton from './AnimatedButton.svelte';
+    import MenuSurface, {Anchor} from '@smui/menu-surface';
 
     import { auth, googleProvider } from './firebase';
     import { authState } from 'rxfire/auth';
@@ -12,12 +14,15 @@
     import { formatDate } from 'timeUtils'
     import { onMount } from 'svelte';
     import { slide } from 'svelte/transition';
-
+    import Snackbar, {Title, Actions, Label} from '@smui/snackbar';
+    import IconButton, {Icon} from '@smui/icon-button';
+  
     let user;
     let w;
     let h;
     let visible = false;
     let startText = "REBEL";
+    let mySnackbar;
 
     const today = new Date();
 	let start = new Date();
@@ -28,9 +33,10 @@
 	let exampleFormatted = false;
     let exampleChosen = false;
     let selected = new Date();
+    $: snackbarMessage = '';
 	
 	$: end = new Date(start.getTime() + 1000 * 3600 * 24 * 720);
-	
+  
 	let threeDaysInPast;
 	$: {
 	  const date = new Date(today);
@@ -52,21 +58,11 @@
 	  inThirtyDays = date;
 	}
 
-	function logchoice(date){
-	  // eslint-disable-next-line
-	  console.log(`User chose ${date}.`);
-    }
-
     function login() {
         visible = false;
         auth.signInWithPopup(googleProvider);
     }
     const unsubscribe = authState(auth).subscribe(u => user = u);
-    
-	// onMount(() => {
-	//   // eslint-disable-next-line
-	//   hljs.initHighlightingOnLoad();
-	// });
 
     function addDays(date, days) {
         var result = new Date(date);
@@ -75,40 +71,50 @@
     }
 
     function handleMenuClick(){
-        visible = !visible;
-        console.log("new visible state:", visible)
+        formSurface.setOpen(true)
+    }
+
+    function displayStatus(event) {
+        console.log(`received event:`,event.detail)
+        const { status, position } = event.detail;
+        snackbarMessage = status;
+        console.log(snackbarMessage);
+        mySnackbar.open();
     }
 
 </script>
 <svelte:window bind:innerHeight={h} bind:innerWidth={w}/>
-<section style="height: {h}px; width=width: {w}px; background-color:#676778;">
+<section style="background-color:#676778;">
 
-<!-- <div class="container" style={height}> -->
 {#if user}
 <nav id="main-nav">
-    <img id="menu-btn" class="icon" src='./img/menu.svg' alt='delete' on:click={handleMenuClick}>
+    <Profile {...user} />
 </nav>
 <div class="container">
-        {#if visible}
-            <div class="profile-section" transition:slide class:visible style="background-color:{lightAColor};">
-                <Profile {...user} />
-            </div>
-        {/if}
         <div class="calendar-section">
-            <div class="calendar">
-            </div>
-                <AddSessionForm creatorUid={user.uid}
-                    bind:lowerDateRange={selected}
-                    bind:upperDateRange={selected}
-                    />
+            <div class="calendar"></div>
+            <AddSessionForm creatorUid={user.uid}
+                bind:lowerDateRange={selected}
+                bind:upperDateRange={selected}
+                on:notify={displayStatus}
+            />          
         </div>
         <div class="sessions-section">
             <div class="sessions">
                 <Sessions
                     bind:lowerDateRange={selected}
                     bind:upperDateRange={selected}
+                    on:notify={displayStatus}
                      />
             </div>
+        </div>
+        <div>
+            <Snackbar bind:this={mySnackbar}>
+                <Label>{snackbarMessage}</Label>
+                    <Actions>
+                        <IconButton class="material-icons" title="Dismiss">close</IconButton>
+                    </Actions>
+            </Snackbar>
         </div>
 </div>
 {:else}
@@ -139,7 +145,7 @@
 
 #main-nav{
     overflow: hidden;
-    height: 40px;
+    height: 50px;
     width: 100% !important;
     border-bottom: 2px solid #c93756;
     -webkit-box-shadow: 0px 15px 10px -20px rgba(0,0,0,1);
@@ -147,38 +153,15 @@
     box-shadow: 0px 15px 10px -20px rgba(0,0,0,1);
     background-color: white;
 }
-  .box{
-    -webkit-box-shadow: 16px 16px 10px -19px rgba(0,0,0,1);
-    -moz-box-shadow: 16px 16px 10px -19px rgba(0,0,0,1);
-    box-shadow: 16px 16px 10px -19px rgba(0,0,0,1);
-  }
-
-#main-nav img{
-  float: left;
-  color: #f2f2f2;
-  text-align: center;
-  padding: 8px 16px;
-  text-decoration: none;
-  font-size: 17px;
-  width: 24px;
-  height: 24px;
-}
-
-#menu-btn{
-    fill: white;
-    z-index: 10000;
+.box{
+-webkit-box-shadow: 16px 16px 10px -19px rgba(0,0,0,1);
+-moz-box-shadow: 16px 16px 10px -19px rgba(0,0,0,1);
+box-shadow: 16px 16px 10px -19px rgba(0,0,0,1);
 }
 .container{
     display:flex;
     justify-content: stretch;
     padding-top: 8px;
-}
-.profile-section{
-    border: .5px solid black;
-    border-radius: px;
-    margin-top: -6px;
-    margin-left: 8px;
-    position: absolute;
 }
 
 .sessions-section{
@@ -187,21 +170,16 @@
     flex: 1;
     padding: 16px;
 }
-
  .calendar-section{
      border-right: dashed 1px black;
      padding: 16px;
      min-width: 400px;
  }
 
-/* .login{
+.login{
     position: absolute;
     left: 50%;
     top: 30%;
-    border: 1px solid black;
-} */
-
-.login{
     z-index: 10001;
     background-color: white;
     padding: 32px;

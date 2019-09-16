@@ -4,6 +4,16 @@
     import { collectionData } from 'rxfire/firestore';
     import { startWith } from 'rxjs/operators';
     import { primaryAColor } from '../style-constants';
+    import { createEventDispatcher } from 'svelte';
+    import Button from '@smui/button';
+    import Switch from '@smui/switch';
+    import FormField from '@smui/form-field';
+    import Textfield, {Input, Textarea} from '@smui/textfield';
+    import Icon from '@smui/textfield/icon';
+    import HelperText from '@smui/textfield/helper-text';
+
+    const dispatch = createEventDispatcher();
+    let actionStatus = "success";
 
     // User ID passed from parent
     export let creatorUid;
@@ -13,10 +23,13 @@
         // Form Text
     let isEnrollmentOpen = true;
     let sessionName = '';
-    let durationMinutes;
+    let durationMinutes = '';
     let studentList = '';
-    let instructorList = '';
+    let instructorList = [''];
     let type = '';
+    let mySnackbar;
+    let status = 'default';
+    let position = 'is-top-right';
 
     // Query requires an index, see screenshot below
     const query = db.collection('sessions')
@@ -38,56 +51,54 @@
         return new Date(result);
     }
 
-    function test() {
-        console.log("db write: ", {isEnrollmentOpen, sessionName, start, durationMinutes, studentList, instructorList, type});
-        console.log("Yesterday", toLowerDate(lowerDateRange))
-        console.log("tomorrow", toUpperDate(upperDateRange))
+    function add() {
+        var formIsValid = verifyForm();
+        if (formIsValid){
+            start = new Date();
+            console.log("db write: ", {isEnrollmentOpen, creatorUid, sessionName, start, durationMinutes, studentList, instructorList, type});
+            db.collection('sessions').add({isEnrollmentOpen, creatorUid, sessionName, start, durationMinutes, studentList, instructorList, type});
+            status = "Successfully created session"; 
+        }
+        else{
+            status = "An error occurred";
+        }
+        notify(status, position);
+
     }
 
-    function add() {
-        start = new Date();
-        console.log("db write: ", {isEnrollmentOpen, creatorUid, sessionName, start, durationMinutes, studentList, instructorList, type});
-        db.collection('sessions').add({isEnrollmentOpen, creatorUid, sessionName, start, durationMinutes, studentList, instructorList, type});
-        sessionName = '';
-        durationMinutes = '';
-        instructorList = '';
-        type = ''
-        isEnrollmentOpen = true;
+    function notify(status, position) {
+		dispatch('notify', { status, position });
+	}
+
+    function verifyForm(){
+        return true;
     }
 
 </script>
 
-<form id="add-session" class="box">
-    <label>Class Name </label>
-    <input required placeholder="e.g. Rebel Flow" bind:value={sessionName}>
-    <label>Class Type</label>
-    <input required placeholder="e.g. Meditation" bind:value={type}>
-    <label>Class Duration</label>
-    <input required type=number min=0 placeholder="Minutes" bind:value={durationMinutes}>
-    <label>Class Instructor</label>
-    <input required placeholder="Name" bind:value={instructorList}>
+<div id="add-session" class="box form">
+    <Textfield variant="outlined" bind:value={sessionName} label="Name" input$aria-controls="helper-text-outlined-c" input$aria-describedby="helper-text-outlined-c"></Textfield>
+    <HelperText id="helper-text-outlined-c">e.g. Rebel Flow</HelperText>
+    <!-- withTrailingIcon={valueClickable !== ''} bind:dirty={dirtyClickable} bind:invalid={invalidClickable} updateInvalid bind:value={valueClickable} -->
 
-    <div class="check-label">
-        <input class="checkbox" type="checkbox" bind:checked={isEnrollmentOpen}>
-        {#if isEnrollmentOpen}
-        <p>Open for enrollment</p>
-        {:else}
-        <p class="is-closed">Open for enrollment</p>
-        {/if}
-    </div>
+    <Textfield variant="outlined" bind:value={type} label="Type" input$aria-controls="helper-text-outlined-c" input$aria-describedby="helper-text-outlined-c"></Textfield>
+    <HelperText id="helper-text-outlined-c">e.g. Meditation</HelperText>
 
-    <div>        
-        <button on:click={add}>Add Session</button>
-        <div class="success-msg"></div>
-    </div>
+    <Textfield type="number" variant="outlined" bind:value={durationMinutes} label="Duration" input$aria-controls="helper-text-outlined-c" input$aria-describedby="helper-text-outlined-c"></Textfield>
+    <HelperText id="helper-text-outlined-c">Minutes</HelperText>
 
-</form>
+    <Textfield variant="outlined" bind:value={instructorList} label="Instructor" input$aria-controls="helper-text-outlined-c" input$aria-describedby="helper-text-outlined-c"></Textfield>
+    <HelperText id="helper-text-outlined-c">Name of Instructor</HelperText>
+
+    <FormField align="start">
+        <Switch bind:checked={isEnrollmentOpen}></Switch>
+        <span slot="label">Open for enrollment</span>
+    </FormField>
+    
+    <button style="margin-top: 8px;" on:click={add}>Add Session</button>
+</div>
 
 <style>
-
-    form{
-        background-color: white;
-    }
     #add-session{
         padding: 16px;
         border-radius: 8px;
@@ -97,25 +108,6 @@
         -webkit-box-shadow: 16px 16px 10px -19px rgba(0,0,0,1);
         -moz-box-shadow: 16px 16px 10px -19px rgba(0,0,0,1);
         box-shadow: 16px 16px 10px -19px rgba(0,0,0,1);
-    }
-    input { display: flex }
-
-    .is-closed{
-        text-decoration: line-through;
-    }
-
-    .check-label{
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-        flex-direction: row;
-        padding-bottom: 8px;
-    }
-    .check-label p{
-        padding-left: 8px;
-    }
-    .check-label .checkbox{
-        align-content: middle;
     }
 
     button{

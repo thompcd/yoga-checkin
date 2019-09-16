@@ -3,19 +3,27 @@
   "version": "1.0.0",
   "devDependencies": {
     "npm-run-all": "^4.1.5",
-    "rollup": "^1.12.0",
-    "rollup-plugin-commonjs": "^10.0.0",
+    "rollup": "^1.21.2",
+    "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-livereload": "^1.0.0",
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-svelte": "^5.0.3",
     "rollup-plugin-terser": "^4.0.4",
-    "svelte": "^3.0.0"
+    "svelte": "^3.12.1",
+    "svelte-material-ui": "^1.0.0-beta.14"
   },
   "dependencies": {
-    "firebase": "^6.3.4",
-    "rxfire": "^3.6.9",
-    "rxjs": "^6.5.2",
+    "@fullhuman/postcss-purgecss": "^1.2.0",
+    "bulma": "^0.7.5",
+    "firebase": "^6.6.0",
+    "postcss-import": "^12.0.1",
+    "rollup-plugin-postcss": "^2.0.3",
+    "rxfire": "^3.8.0",
+    "rxjs": "^6.5.3",
+    "sass": "^1.23.0-module.beta.1",
     "sirv-cli": "^0.4.4",
+    "svelma": "^0.2.0",
+    "tailwindcss": "^1.1.2",
     "timeUtils": "^1.1.5"
   },
   "scripts": {
