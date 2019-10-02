@@ -18,10 +18,10 @@
             newStudent });
     }
 
-        function removeStudent() {
-		dispatch('removeStudent', {
-            id,
-            studentId });
+    function removeStudent() {
+        dispatch('removeStudent', {
+        id,
+        studentId });
     }
     
 	function toggleStatus() {
@@ -42,9 +42,9 @@
     export let creatorUid
     export let sessionName;
     export let type;
-    export let isEnrollmentOpen = true;;
+    export let isEnrollmentOpen = true;
     export let durationMinutes;
-    export let studentList;
+    export let studentList = [];
     export let instructorList;
     export let start;
     export let newStudent = '';
@@ -75,7 +75,7 @@
         display: flex;
         flex-direction: column;
         padding: 32px;
-        width: 200px;
+        width: 220px;
         border-radius: 8px;
         background-color: white;
     }
@@ -85,8 +85,19 @@
         justify-content: space-between;
     }
 
-    .row{
+    .inline-row{
         display: inline-flex;
+        vertical-align: middle;
+    }
+
+    .row{
+        display: flex;
+        flex-direction: row;
+    }
+
+    .column{
+        display: flex;
+        flex-direction: column;
     }
 
     input{
@@ -122,16 +133,15 @@
         margin: 0;
     }
 
-    .inline-icon{
-        padding-top: 4px;
-        padding-left: 8px;
+    .remove-student-icon{
+        margin-right: 8px;
+        width: 16px;
     }
 
-    #remove-student-icon{
-        padding-left: 8px;
-        padding-bottom: 4px;
-        height: 16px;
+    #add-student-icon{
+        margin-left: 4px;
         width: 16px;
+        margin-top: 4px;
     }
 
     .box{
@@ -153,23 +163,25 @@
         </div>
         {#if detailView}
         <div transition:slide>
-            <div class="row">
+            <div class="inline-row">
                 <img class="icon" src='./img/trash.svg' alt='delete' on:click={remove}>
             </div>
-            <div class="row">
+            <div class="inline-row">
                 <img class="icon" src={enrollIconURL} class:isEnrollmentOpen  alt='un/lock enrollment' on:click={toggleStatus}>
             </div>
             <br>Students:
-            <ul class="students detail-view">
+            <ul class="students detail-view column">
                 {#each studentList as student}
-                <div class="row">
-                    {student}<img class="icon" id="remove-student-icon" src='./img/delete-circle.svg' alt='delete' on:click={removeStudent}>
+                <div class="inline-row">
+                    <img class="icon remove-student-icon" src='./img/delete-circle.svg' alt='delete' on:click={removeStudent}>{student}
                 </div>
                 {/each}
             </ul>
             <div class="row detail-view">
-                <input required placeholder="New student" bind:value={newStudent}>
-                <img class="icon inline-icon" src='./img/add-circle.svg' alt='add' on:click={addStudent}>
+                <div class="inline-row">
+                    <input required placeholder="New student" bind:value={newStudent}>
+                    <img class="icon" id="add-student-icon" src='./img/add-circle.svg' alt='add' on:click={addStudent}>
+                </div>
             </div>
         </div>
         {/if}

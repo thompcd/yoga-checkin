@@ -7,14 +7,14 @@
     import TextAnimation from './TextAnimation.svelte';
     import Datepicker from './Calendar/Datepicker.svelte';
     import MenuSurface, {Anchor} from '@smui/menu-surface';
+    import Calendar from './InfiniteScroll/ScrollCalendar.svelte';
 
     import { auth, googleProvider } from './firebase';
     import { authState } from 'rxfire/auth';
     import { lightAColor } from './style-constants';
     import { formatDate } from 'timeUtils'
     import { onMount } from 'svelte';
-    import { slide } from 'svelte/transition';
-    import Snackbar, {Title, Actions, Label} from '@smui/snackbar';
+    import Snackbar, {Actions, Label} from '@smui/snackbar';
     import IconButton, {Icon} from '@smui/icon-button';
   
     let user;
@@ -91,13 +91,18 @@
     <Profile {...user} />
 </nav>
 <div class="container">
-        <div class="calendar-section">
-            <div class="calendar"></div>
+        <div class="calendar-section" style="height:{h}px">
             <AddSessionForm creatorUid={user.uid}
                 bind:lowerDateRange={selected}
                 bind:upperDateRange={selected}
                 on:notify={displayStatus}
-            />          
+            />
+            <div class="calendar">
+            <Calendar 
+                boundsHeight = "100%"
+                boundsWidth = "400px"
+                />      
+            </div>
         </div>
         <div class="sessions-section">
             <div class="sessions">
@@ -173,7 +178,9 @@ box-shadow: 16px 16px 10px -19px rgba(0,0,0,1);
  .calendar-section{
      border-right: dashed 1px black;
      padding: 16px;
+     height: 100%;
      min-width: 400px;
+     max-width: 500px;
  }
 
 .login{
@@ -226,6 +233,7 @@ button{
 
 .calendar{
     display: flex;
+    width: 400px;
 }
 
 .sessions{

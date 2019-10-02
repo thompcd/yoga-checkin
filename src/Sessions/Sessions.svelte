@@ -84,7 +84,8 @@
         const { id, newStudent } = event.detail;
         console.log("existing list:", studentList);
         console.log("adding student", id, newStudent);
-        db.collection('sessions').doc(id).update({studentList: [...studentList, newStudent]});
+        studentList = [...studentList, newStudent];
+        db.collection('sessions').doc(id).update({studentList: [...studentList]});
         console.log("new list:", studentList);
         notify('Successfully added student', 'is-bottom');
     }
@@ -95,13 +96,6 @@
 
 </script>
 <div class="inline" >
-    <Datepicker bind:dateChosen 
-        bind:selected
-        format="{dateFormat}"
-        start={threeDaysInPast}
-        end={inThirtyDays}
-        selectableCallback={noWeekendsSelectableCallback}
-    />
 </div>
 <ul class="session-entry">
 	{#each $sessions as session}

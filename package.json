@@ -15,6 +15,7 @@
   "dependencies": {
     "@fullhuman/postcss-purgecss": "^1.2.0",
     "bulma": "^0.7.5",
+    "date-fns": "^2.2.1",
     "firebase": "^6.6.0",
     "postcss-import": "^12.0.1",
     "rollup-plugin-postcss": "^2.0.3",
@@ -22,6 +23,7 @@
     "rxjs": "^6.5.3",
     "sass": "^1.23.0-module.beta.1",
     "sirv-cli": "^0.4.4",
+    "source-map-support": "^0.5.13",
     "svelma": "^0.2.0",
     "tailwindcss": "^1.1.2",
     "timeUtils": "^1.1.5"
