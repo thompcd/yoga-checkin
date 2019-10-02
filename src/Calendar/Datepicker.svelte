@@ -190,7 +190,7 @@
 </script>
 
 <div class="datepicker" class:open="{isOpen}" class:closing="{isClosing}">
-  <Popover
+  <!-- <Popover
     bind:this="{popover}"
     bind:open="{isOpen}"
     bind:shrink="{isClosing}"
@@ -206,9 +206,14 @@
         </button>
         {/if}
       </slot>
-    </div>
+    </div> -->
+<!--
     <div slot="contents">
-      <div class="calendar">
+//
+    </div>
+//
+  </Popover> -->
+        <div class="calendar">
         <NavBar {month} {year} {start} {end} {canIncrementMonth}
         {canDecrementMonth} on:monthSelected={e => changeMonth(e.detail)}
         on:incrementMonth={e => incrementMonth(e.detail)} />
@@ -220,8 +225,6 @@
         <Month {visibleMonth} {selected} {highlighted} {shouldShakeDate} {start}
         {end} id={visibleMonthId} on:dateSelected={e => registerSelection(e.detail)} />
       </div>
-    </div>
-  </Popover>
 </div>
 
 <style>

@@ -100,11 +100,12 @@
             <div class="calendar">
             <Calendar 
                 boundsHeight = "100%"
-                boundsWidth = "400px"
+                boundsWidth = "340px"
                 />      
             </div>
         </div>
         <div class="sessions-section">
+
             <div class="sessions">
                 <Sessions
                     bind:lowerDateRange={selected}
@@ -179,8 +180,7 @@ box-shadow: 16px 16px 10px -19px rgba(0,0,0,1);
      border-right: dashed 1px black;
      padding: 16px;
      height: 100%;
-     min-width: 400px;
-     max-width: 500px;
+     width: 360px;
  }
 
 .login{
