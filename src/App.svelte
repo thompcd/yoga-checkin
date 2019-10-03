@@ -7,7 +7,8 @@
     import TextAnimation from './TextAnimation.svelte';
     import Datepicker from './Calendar/Datepicker.svelte';
     import MenuSurface, {Anchor} from '@smui/menu-surface';
-    import Calendar from './InfiniteScroll/ScrollCalendar.svelte';
+    import Calendar from './InfiniteScroll/ScrollCalendar.svelte';	
+    import { endOfDay, startOfDay, } from 'date-fns';
 
     import { auth, googleProvider } from './firebase';
     import { authState } from 'rxfire/auth';
@@ -44,11 +45,13 @@
         snackbarMessage = status;
         console.log(snackbarMessage);
         mySnackbar.open();
-    }
+    }    
 
       function dateSelected(event) {
         const { date } = event.detail;
-        console.log('Successfully received Date in app');
+        selected = date;
+
+        console.log('Successfully received Date in app', selected);
     }
 </script>
 <svelte:window bind:innerHeight={h} bind:innerWidth={w}/>
@@ -78,8 +81,8 @@
 
             <div class="sessions">
                 <Sessions
-                    bind:lowerDateRange={selected}
-                    bind:upperDateRange={selected}
+                    lowerDateRange={startOfDay(selected)}
+                    upperDateRange={endOfDay(selected)}
                     on:notify={displayStatus}
                      />
             </div>

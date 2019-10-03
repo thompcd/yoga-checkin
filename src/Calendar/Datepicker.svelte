@@ -18,8 +18,8 @@
 
   let monthFormat = "MMM";
   let yearFormat = "yyy";
-  export let start = new Date(1987, 9, 29);
-  export let end = new Date(2020, 9, 29);
+  export let start = new Date(1950, 9, 29);
+  export let end = new Date(2050, 9, 29);
   export let selected = today;
   export let dateChosen = false;
   export let trigger = null;
