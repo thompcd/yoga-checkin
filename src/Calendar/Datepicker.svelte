@@ -1,12 +1,12 @@
 <script>
   import Month from './Month.svelte';
-  import NavBar from './NavBar.svelte';
-  import Popover from './Popover.svelte';
   import { dayDict } from './lib/dictionaries';
   import { getMonths, areDatesEquivalent } from './lib/helpers';
   import { keyCodes, keyCodesArray } from './lib/keyCodes';
+	import {
+    format
+  } from 'date-fns';
 
-  import { formatDate } from 'timeUtils';
   import { onMount, createEventDispatcher } from 'svelte';
 
   const dispatch = createEventDispatcher();
@@ -14,19 +14,25 @@
 
   let popover;
 
-  export let format = "#{m}/#{d}/#{Y}";
+  let monthFormat = "MMM";
+  let yearFormat = "yyy";
   export let start = new Date(1987, 9, 29);
   export let end = new Date(2020, 9, 29);
   export let selected = today;
   export let dateChosen = false;
   export let trigger = null;
   export let selectableCallback = null;
+  export let initDate;
 
   let highlighted = today;
   let shouldShakeDate = false;
   let shakeHighlightTimeout;
-  let month = today.getMonth();
-  let year = today.getFullYear();
+  $: month = today.getMonth();
+  $: year = today.getFullYear();
+  let formattedMonth;
+  let formattedYear;
+  // let year = format(today, 'yyyy')
+  // export let month = format(today, 'MMM')
 
   let isOpen = false;
   let isClosing = false;
@@ -59,27 +65,20 @@
 
   export let formattedSelected;
   $: {
-    formattedSelected = formatDate(selected, format);
+    // formattedSelected = formatDate(selected, format);
+    formattedSelected = format(selected, 'MM/dd/yyyy');
   }
 
   onMount(() => {
-    month = selected.getMonth();
-    year = selected.getFullYear();
+    month = initDate.getMonth();
+    year = initDate.getFullYear();
+    formattedMonth = format(month, monthFormat);
+    formattedYear = format(year, yearFormat);
+    console.log("init date", initDate);
+    console.log("month", month);
+    console.log("year",year);
+    console.log("formatyear", formattedYear);
   });
-
-  function changeMonth(selectedMonth) {
-    month = selectedMonth;
-  }
-
-  function incrementMonth(direction, date) {
-    if (direction === 1 && !canIncrementMonth) return;
-    if (direction === -1 && !canDecrementMonth) return;
-    let current = new Date(year, month, 1);
-    current.setMonth(current.getMonth() + direction);
-    month = current.getMonth();
-    year = current.getFullYear();
-    highlighted = new Date(year, month, date || 1);
-  }
 
   function getDefaultHighlighted() {
     return new Date(selected);
@@ -129,7 +128,7 @@
   function registerSelection(chosen) {
     if (!checkIfVisibleDateIsSelectable(chosen)) return shakeDate(chosen);
     // eslint-disable-next-line
-    close();
+    // close();
     selected = chosen;
     dateChosen = true;
     assignValueToTrigger(formattedSelected);
@@ -158,10 +157,10 @@
       case keyCodes.pgdown:
         incrementMonth(1);
         break;
-      case keyCodes.escape:
-        // eslint-disable-next-line
-        close();
-        break;
+      // case keyCodes.escape:
+      //   // eslint-disable-next-line
+      //   close();
+      //   break;
       case keyCodes.enter:
         registerSelection(highlighted);
         break;
@@ -170,61 +169,19 @@
     }
   }
 
-  function registerClose() {
-    document.removeEventListener('keydown', handleKeyPress);
-    dispatch('close');
-  }
-
-  function close() {
-    popover.close();
-    registerClose();
-  }
-
-  function registerOpen() {
-    highlighted = getDefaultHighlighted();
-    month = selected.getMonth();
-    year = selected.getFullYear();
-    document.addEventListener('keydown', handleKeyPress);
-    dispatch('open');
-  }
 </script>
 
 <div class="datepicker" class:open="{isOpen}" class:closing="{isClosing}">
-  <!-- <Popover
-    bind:this="{popover}"
-    bind:open="{isOpen}"
-    bind:shrink="{isClosing}"
-    {trigger}
-    on:opened="{registerOpen}"
-    on:closed="{registerClose}"
-  >
-    <div slot="trigger">
-      <slot>
-        {#if !trigger}
-        <button class="calendar-button box" type="button">
-          {formattedSelected}
-        </button>
-        {/if}
-      </slot>
-    </div> -->
-<!--
-    <div slot="contents">
-//
-    </div>
-//
-  </Popover> -->
-        <div class="calendar">
-        <NavBar {month} {year} {start} {end} {canIncrementMonth}
-        {canDecrementMonth} on:monthSelected={e => changeMonth(e.detail)}
-        on:incrementMonth={e => incrementMonth(e.detail)} />
-        <div class="legend">
-          {#each dayDict as day}
-          <span>{day.abbrev}</span>
-          {/each}
-        </div>
-        <Month {visibleMonth} {selected} {highlighted} {shouldShakeDate} {start}
-        {end} id={visibleMonthId} on:dateSelected={e => registerSelection(e.detail)} />
-      </div>
+  <div class="calendar">
+  {format(initDate, 'MMMM yyyy')}
+  <div class="legend">
+    {#each dayDict as day}
+    <span>{day.abbrev}</span>
+    {/each}
+  </div>
+  <Month {visibleMonth} {selected} {highlighted} {shouldShakeDate} {start}
+  {end} id={visibleMonthId} on:dateSelected={e => registerSelection(e.detail)} />
+  </div>
 </div>
 
 <style>
@@ -234,25 +191,6 @@
     text-align: center;
     overflow: visible;
   }
-
-  .calendar-button {
-    padding: 10px 20px;
-    border: 1px solid #eee;
-    display: block;
-    text-align: center;
-    width: 300px;
-    text-decoration: none;
-    cursor: pointer;
-    background: #fff;
-    border-radius: 7px;
-  }
-
-    .box{
-      -webkit-box-shadow: 16px 16px 10px -19px rgba(0,0,0,1);
-      -moz-box-shadow: 16px 16px 10px -19px rgba(0,0,0,1);
-      box-shadow: 16px 16px 10px -19px rgba(0,0,0,1);
-    }
-
   *,
   *:before,
   *:after {
@@ -265,8 +203,7 @@
     overflow: hidden;
     user-select: none;
     width: 100vw;
-    padding: 10px;
-    padding-top: 0;
+    padding: 1rem 0;
   }
 
   @media (min-width: 480px) {

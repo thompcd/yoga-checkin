@@ -112,8 +112,13 @@
 
     ul{
         padding:0px;
+        height: 100%;
+        -ms-overflow-style: none; 
+        scrollbar-width: none; 
     }
-
+    ul::-webkit-scrollbar { 
+        display: none;  
+    }
     .session-item-wrapper{
         width: 100%;
     }

@@ -23,52 +23,16 @@
     let visible = false;
     let startText = "REBEL";
     let mySnackbar;
+    let formattedSelected;
 
-    const today = new Date();
-	let start = new Date();
-	let dateFormat = '#{l}, #{F} #{j}, #{Y}';
-	let noWeekendsSelectableCallback = (date) => date.getDay() !== 0 && date.getDay() !== 6;
-	let formattedSelected;
-    let dateChosen = false;
-	let exampleFormatted = false;
-    let exampleChosen = false;
-    let selected = new Date();
-    $: snackbarMessage = '';
-	
-	$: end = new Date(start.getTime() + 1000 * 3600 * 24 * 720);
-  
-	let threeDaysInPast;
-	$: {
-	  const date = new Date(today);
-	  date.setDate(date.getDate() - 3);
-	  threeDaysInPast = date;
-	}
-
-	let tomorrow;
-	$: {
-	  const date = new Date(today);
-	  date.setDate(date.getDate() + 1);
-	  tomorrow = date;
-	}
-
-	let inThirtyDays;
-	$: {
-	  const date = new Date(start);
-	  date.setDate(date.getDate() + 30);
-	  inThirtyDays = date;
-	}
+    $: selected = new Date();
+    $: snackbarMessage = '';	
 
     function login() {
         visible = false;
         auth.signInWithPopup(googleProvider);
     }
     const unsubscribe = authState(auth).subscribe(u => user = u);
-
-    function addDays(date, days) {
-        var result = new Date(date);
-        result.setDate(result.getDate() + days);
-        return result;
-    }
 
     function handleMenuClick(){
         formSurface.setOpen(true)
@@ -177,10 +141,10 @@ box-shadow: 16px 16px 10px -19px rgba(0,0,0,1);
     padding: 16px;
 }
  .calendar-section{
-     border-right: dashed 1px black;
+     border-top: solid 2px black;
      padding: 16px;
+     padding-top: 0px;
      height: 100%;
-     width: 360px;
  }
 
 .login{
@@ -234,6 +198,7 @@ button{
 .calendar{
     display: flex;
     width: 400px;
+    justify-content: center;
 }
 
 .sessions{

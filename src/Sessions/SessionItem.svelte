@@ -148,12 +148,13 @@
         -webkit-box-shadow: 16px 16px 10px -19px rgba(0,0,0,1);
         -moz-box-shadow: 16px 16px 10px -19px rgba(0,0,0,1);
         box-shadow: 16px 16px 10px -19px rgba(0,0,0,1);
+        margin-bottom: 16px;
     }
 </style>
 
 
-<div class="item-wrapper">
-    <li class="session-item box">
+<div class="item-wrapper box">
+    <li class="session-item">
         <div class="row" id="title-row">
             <h3 class="session-text">{ sessionName }</h3>
             <svg class="icon" class:detailView on:click={toggleDetailView}>

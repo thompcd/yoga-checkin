@@ -87,6 +87,7 @@
     const item = prev(nextSibling.item);
     const { top: bottom } = nextSibling;
 
+    console.log("unshift item", item);
     attach(item);
 
     const first = { item, top: bottom - cache[item], bottom };
@@ -106,6 +107,7 @@
     const item = next(previousSibling.item);
     const { bottom: top } = previousSibling;
 
+    console.log("push item", item);
     attach(item);
 
     const last = { item, top, bottom: top + cache[item] };
@@ -200,17 +202,22 @@
     margin: 0;
     overflow-y: scroll;
     list-style: none;
+    -ms-overflow-style: none; 
+    scrollbar-width: none; 
+  }
+  ul::-webkit-scrollbar { 
+      display: none;  
   }
 	
 	li {
 		position: absolute;
 		width: 100%;
 	}
-	
-	li:nth-of-type(odd) {
-		background-color: #f5f5f5;
-	}
-	
+  
+	li{
+    padding: 0;
+    background-color: #f5f5f5;
+  }
 	.sentinel {
 	  position: absolute;
 		width: 1px;

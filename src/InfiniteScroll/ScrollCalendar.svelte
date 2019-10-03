@@ -7,7 +7,6 @@
     subMonths,
   } from 'date-fns';
   import InfiniteScroller from './InfiniteScroller.svelte';
-  import Month from './Month.svelte';
   import Datepicker from '../Calendar/Datepicker.svelte';
 
   export let weekHeight = 48;
@@ -50,26 +49,37 @@
   }
   console.log("30daysInFuture", inThirtyDays);
   
-  
+  function addMonth(m){
+    console.log("month",m);
+    return +addMonths(m, 1);
+  }
 </script>
 
 <InfiniteScroller
   {itemHeight}
   minItemHeight={calcMonthHeight(4)}
-  initial={+startOfMonth(initialMonth)}
-  prev={m => +subMonths(m, 1)}
-  next={m => +addMonths(m, 1)}
+  initial={startOfMonth(initialMonth)}
+  prev={month => subMonths(month, 1)}
+  next={month => addMonths(month, 1)}
   boundsHeight={boundsHeight}
   boundsWidth={boundsWidth}
 >
-  <div slot="item" let:item={m}>
-    <Datepicker
+  <div class="card" slot="item" let:item={month}>
+    <Datepicker {month}
     format = {dateFormat}
-    start={threeDaysInPast} 
-    end={inThirtyDays}
-    selectableCallback={noWeekendsSelectableCallback}
+    start={this.prev} 
+    end={this.next}
+    initDate={month}
     >
     </Datepicker>
     <!-- <Month {m} height={itemHeight(m)} /> -->
   </div>
 </InfiniteScroller>
+
+<style>
+    .card{
+        -webkit-box-shadow: 16px 16px 10px -16px rgba(0,0,0,1);
+        -moz-box-shadow: 16px 16px 10px -16px rgba(0,0,0,1);
+        box-shadow: 16px 16px 10px -16px rgba(0,0,0,1);
+    }
+    </style>
