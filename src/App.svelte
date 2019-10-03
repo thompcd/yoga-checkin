@@ -46,6 +46,10 @@
         mySnackbar.open();
     }
 
+      function dateSelected(event) {
+        const { date } = event.detail;
+        console.log('Successfully received Date in app');
+    }
 </script>
 <svelte:window bind:innerHeight={h} bind:innerWidth={w}/>
 <section style="background-color:#676778;">
@@ -65,6 +69,8 @@
             <Calendar 
                 boundsHeight = "100%"
                 boundsWidth = "340px"
+                on:dateSelected={dateSelected}
+
                 />      
             </div>
         </div>

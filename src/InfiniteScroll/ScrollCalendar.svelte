@@ -17,42 +17,19 @@
   const calcMonthHeight = weeksCount => weeksCount * weekHeight;
 
   const itemHeight = 450;
-  // const itemHeight = m =>
-  //   calcMonthHeight(differenceInCalendarWeeks(endOfMonth(m), m) + 1);
 
 //datepicker vars
-    const today = new Date();
-	let start = new Date();
-
-    console.log("today", today)
-	let dateFormat = '#{l}, #{F} #{j}, #{Y}';
-  let noWeekendsSelectableCallback = (date) => date.getDay() !== 0 && date.getDay() !== 6;
-   	let formattedSelected;
-    let dateChosen = false;
-	let exampleFormatted = false;
-    let exampleChosen = false;
-    let selected = new Date(); 
-    	$: end = new Date(start.getTime() + 1000 * 3600 * 24 * 720);
-  
-    let threeDaysInPast;
-	$: {
-	  const date = new Date(today);
-	  date.setDate(date.getDate() - 3);
-	  threeDaysInPast = date;
-  }
-  console.log("3daysInPast", threeDaysInPast);
-  	let inThirtyDays;
-	$: {
-	  const date = new Date(start);
-	  date.setDate(date.getDate() + 30);
-	  inThirtyDays = date;
-  }
-  console.log("30daysInFuture", inThirtyDays);
-  
+  let dateFormat = '#{l}, #{F} #{j}, #{Y}';
+    
   function addMonth(m){
     console.log("month",m);
     return +addMonths(m, 1);
   }
+
+  function dateSelected(event) {
+        const { date } = event.detail;
+        console.log('Successfully received Date');
+    }
 </script>
 
 <InfiniteScroller
@@ -70,6 +47,7 @@
     start={this.prev} 
     end={this.next}
     initDate={month}
+    on:dateSelected
     >
     </Datepicker>
     <!-- <Month {m} height={itemHeight(m)} /> -->

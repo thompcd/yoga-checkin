@@ -4,7 +4,9 @@
   import { getMonths, areDatesEquivalent } from './lib/helpers';
   import { keyCodes, keyCodesArray } from './lib/keyCodes';
 	import {
-    format
+    format,
+    startOfMonth,
+    endOfMonth,
   } from 'date-fns';
 
   import { onMount, createEventDispatcher } from 'svelte';
@@ -132,6 +134,7 @@
     selected = chosen;
     dateChosen = true;
     assignValueToTrigger(formattedSelected);
+    console.log("date selected", chosen);
     return dispatch('dateSelected', { date: chosen });
   }
 
@@ -179,8 +182,8 @@
     <span>{day.abbrev}</span>
     {/each}
   </div>
-  <Month {visibleMonth} {selected} {highlighted} {shouldShakeDate} {start}
-  {end} id={visibleMonthId} on:dateSelected={e => registerSelection(e.detail)} />
+  <Month {visibleMonth} {selected} {highlighted} {shouldShakeDate} start={startOfMonth}
+  end{endOfMonth} id={visibleMonthId} on:dateSelected={e => registerSelection(e.detail)} />
   </div>
 </div>
 
