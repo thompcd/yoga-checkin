@@ -7,14 +7,15 @@
     import TextAnimation from './TextAnimation.svelte';
     import Datepicker from './Calendar/Datepicker.svelte';
     import MenuSurface, {Anchor} from '@smui/menu-surface';
+    import Calendar from './InfiniteScroll/ScrollCalendar.svelte';	
+    import { endOfDay, startOfDay, } from 'date-fns';
 
     import { auth, googleProvider } from './firebase';
     import { authState } from 'rxfire/auth';
     import { lightAColor } from './style-constants';
     import { formatDate } from 'timeUtils'
     import { onMount } from 'svelte';
-    import { slide } from 'svelte/transition';
-    import Snackbar, {Title, Actions, Label} from '@smui/snackbar';
+    import Snackbar, {Actions, Label} from '@smui/snackbar';
     import IconButton, {Icon} from '@smui/icon-button';
   
     let user;
@@ -23,52 +24,16 @@
     let visible = false;
     let startText = "REBEL";
     let mySnackbar;
+    let formattedSelected;
 
-    const today = new Date();
-	let start = new Date();
-	let dateFormat = '#{l}, #{F} #{j}, #{Y}';
-	let noWeekendsSelectableCallback = (date) => date.getDay() !== 0 && date.getDay() !== 6;
-	let formattedSelected;
-    let dateChosen = false;
-	let exampleFormatted = false;
-    let exampleChosen = false;
-    let selected = new Date();
-    $: snackbarMessage = '';
-	
-	$: end = new Date(start.getTime() + 1000 * 3600 * 24 * 720);
-  
-	let threeDaysInPast;
-	$: {
-	  const date = new Date(today);
-	  date.setDate(date.getDate() - 3);
-	  threeDaysInPast = date;
-	}
-
-	let tomorrow;
-	$: {
-	  const date = new Date(today);
-	  date.setDate(date.getDate() + 1);
-	  tomorrow = date;
-	}
-
-	let inThirtyDays;
-	$: {
-	  const date = new Date(start);
-	  date.setDate(date.getDate() + 30);
-	  inThirtyDays = date;
-	}
+    $: selected = new Date();
+    $: snackbarMessage = '';	
 
     function login() {
         visible = false;
         auth.signInWithPopup(googleProvider);
     }
     const unsubscribe = authState(auth).subscribe(u => user = u);
-
-    function addDays(date, days) {
-        var result = new Date(date);
-        result.setDate(result.getDate() + days);
-        return result;
-    }
 
     function handleMenuClick(){
         formSurface.setOpen(true)
@@ -80,8 +45,14 @@
         snackbarMessage = status;
         console.log(snackbarMessage);
         mySnackbar.open();
-    }
+    }    
 
+      function dateSelected(event) {
+        const { date } = event.detail;
+        selected = date;
+
+        console.log('Successfully received Date in app', selected);
+    }
 </script>
 <svelte:window bind:innerHeight={h} bind:innerWidth={w}/>
 <section style="background-color:#676778;">
@@ -91,19 +62,27 @@
     <Profile {...user} />
 </nav>
 <div class="container">
-        <div class="calendar-section">
-            <div class="calendar"></div>
+        <div class="calendar-section" style="height:{h}px">
             <AddSessionForm creatorUid={user.uid}
                 bind:lowerDateRange={selected}
                 bind:upperDateRange={selected}
                 on:notify={displayStatus}
-            />          
+            />
+            <div class="calendar">
+            <Calendar 
+                boundsHeight = "100%"
+                boundsWidth = "340px"
+                on:dateSelected={dateSelected}
+
+                />      
+            </div>
         </div>
         <div class="sessions-section">
+
             <div class="sessions">
                 <Sessions
-                    bind:lowerDateRange={selected}
-                    bind:upperDateRange={selected}
+                    lowerDateRange={startOfDay(selected)}
+                    upperDateRange={endOfDay(selected)}
                     on:notify={displayStatus}
                      />
             </div>
@@ -171,9 +150,10 @@ box-shadow: 16px 16px 10px -19px rgba(0,0,0,1);
     padding: 16px;
 }
  .calendar-section{
-     border-right: dashed 1px black;
+     border-top: solid 2px black;
      padding: 16px;
-     min-width: 400px;
+     padding-top: 0px;
+     height: 100%;
  }
 
 .login{
@@ -226,6 +206,8 @@ button{
 
 .calendar{
     display: flex;
+    width: 400px;
+    justify-content: center;
 }
 
 .sessions{

@@ -14,6 +14,7 @@
     export let uid;
     export let email;
     export let phoneNumber;
+    export let isAdmin = false;
      let formSurface;
      let name = '';
     // TODO: functional updates
@@ -27,6 +28,10 @@
 
     function login() {
         auth.signInWithPopup(googleProvider);
+    }
+
+    function toggleAdmin(){
+        isAdmin = !isAdmin;
     }
 </script>
 
@@ -44,22 +49,27 @@
         <Text>Email: {email}</Text>
         <Text>Phone: {phoneNumber === null ? "None" : phoneNumber}</Text>
         <div class="separator"></div>
-        <Item on:SMUI:action={() => updateEmail}><Text>Update Email</Text></Item>
-        <Item on:SMUI:action={() => updatePhoneNumber}><Text>Update Phone</Text></Item>
-        <Item on:SMUI:action={() => updatePassword}><Text>Update Password</Text></Item>
+        <Item class="item" on:SMUI:action={() => updateEmail}><Text>Update Email</Text></Item>
+        <Item class="item" on:SMUI:action={() => updatePhoneNumber}><Text>Update Phone</Text></Item>
+        <Item class="item" on:SMUI:action={() => updatePassword}><Text>Update Password</Text></Item>
         <div class="separator"></div>
+        <Button style="margin-top: 1em;" on:click={ () => toggleAdmin() }>IsAdmin: {isAdmin}</Button>
         <Button style="margin-top: 1em;" on:click={ () => auth.signOut() }>Logout</Button>
     </div>
     </MenuSurface>
 </div>
 
 <style>
+
+    .item{
+        text-decoration: underline;
+    }
     .surface-content{
         margin: 1em;
         display: flex; 
         flex-direction: column; 
         align-items: flex-start;
-        max-width: 200px;
+        max-width: 250px;
         text-overflow: ellipsis;
     }
     .separator{
@@ -67,6 +77,7 @@
         padding: 4px;
         width: 100%;
         border-bottom: 1px solid black;
+        margin-bottom: 4px;
         }
     .profile-img-wrapper{
         display: inline-flex;
