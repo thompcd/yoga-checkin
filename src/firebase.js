@@ -2,14 +2,15 @@ import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
 const firebaseConfig = {
-    apiKey: "AIzaSyCTdtnQCUEFKU2UguXsrvwpMbLeGRO5PLk",
-    authDomain: "yoga-checkin.firebaseapp.com",
-    databaseURL: "https://yoga-checkin.firebaseio.com",
-    projectId: "yoga-checkin",
-    storageBucket: "",
-    messagingSenderId: "602737132367",
-    appId: "1:602737132367:web:20804fdba6433c54"
-  };
+  apiKey: "AIzaSyBJszROkyTunBp03Cxj9ZrBvrIDYdjjeNk",
+  authDomain: "class-scheduler-13cf9.firebaseapp.com",
+  databaseURL: "https://class-scheduler-13cf9.firebaseio.com",
+  projectId: "class-scheduler-13cf9",
+  storageBucket: "class-scheduler-13cf9.appspot.com",
+  messagingSenderId: "1018249606667",
+  appId: "1:1018249606667:web:00977af7764ec0ee0f790e",
+  measurementId: "G-ZV0XNB0EJ3"
+};
 
 firebase.initializeApp(firebaseConfig);
 
