@@ -1,6 +1,9 @@
+<svelte:head>
+
+</svelte:head>
+
 <script>
     import 'bulma/css/bulma.css'
-
     import Profile from './Profile.svelte';
     import Sessions from './Sessions/Sessions.svelte';
     import AddSessionForm from './Sessions/AddSessionForm.svelte';
@@ -55,19 +58,21 @@
     }
 </script>
 <svelte:window bind:innerHeight={h} bind:innerWidth={w}/>
-<section style="background-color:#676778;">
+<section style="background-color:#676778; overflow-y:hidden">
 
 {#if user}
 <nav id="main-nav">
     <Profile {...user} />
 </nav>
 <div class="container">
-        <div class="calendar-section" style="height:{h}px">
+        <div class="forms-section" style="padding-right:1rem;">
             <AddSessionForm creatorUid={user.uid}
                 bind:lowerDateRange={selected}
                 bind:upperDateRange={selected}
                 on:notify={displayStatus}
             />
+        </div>
+        <div class="calendar-section" style="height:{h-48}px">
             <div class="calendar">
             <Calendar 
                 boundsHeight = "100%"
@@ -78,7 +83,6 @@
             </div>
         </div>
         <div class="sessions-section">
-
             <div class="sessions">
                 <Sessions
                     lowerDateRange={startOfDay(selected)}
@@ -97,7 +101,7 @@
         </div>
 </div>
 {:else}
-<div class="container">
+<div class="container" style="height:{h}px;">
     <!-- TODO: wait for auto login -->
     <div class="bounds-logged-out">
         <div id="login-animation" style="top:24px; left:24px; height:{h/4}px;">
@@ -154,6 +158,11 @@ box-shadow: 16px 16px 10px -19px rgba(0,0,0,1);
      padding: 16px;
      padding-top: 0px;
      height: 100%;
+ }
+
+ .calendar-section::before{
+    -webkit-box-shadow: 0px 5px 8px -3px #000000; 
+     box-shadow: 0px 5px 8px -3px #000000;
  }
 
 .login{

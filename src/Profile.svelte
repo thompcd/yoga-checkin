@@ -28,6 +28,7 @@
 
     function login() {
         auth.signInWithPopup(googleProvider);
+        console.log("Auth state", authState);
     }
 
     function toggleAdmin(){

@@ -75,7 +75,7 @@
     }
 
 </script>
-<div id="add-session" class="box form" style="display:none">
+<div id="add-session" class="box form">
     <Textfield variant="outlined" bind:value={sessionName} label="Name" input$aria-controls="helper-text-outlined-c" input$aria-describedby="helper-text-outlined-c"></Textfield>
     <HelperText id="helper-text-outlined-c">e.g. Rebel Flow</HelperText>
     <!-- withTrailingIcon={valueClickable !== ''} bind:dirty={dirtyClickable} bind:invalid={invalidClickable} updateInvalid bind:value={valueClickable} -->
