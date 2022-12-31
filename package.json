@@ -18,7 +18,7 @@
     "date-fns": "^2.2.1",
     "firebase": "^6.6.0",
     "postcss-import": "^12.0.1",
-    "rollup-plugin-postcss": "^2.0.3",
+    "rollup-plugin-postcss": "^4.0.2",
     "rxfire": "^3.8.0",
     "rxjs": "^6.5.3",
     "sass": "^1.23.0-module.beta.1",
